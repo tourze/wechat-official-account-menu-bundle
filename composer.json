@@ -5,6 +5,7 @@
   "license": "MIT",
   "require": {
     "php": "^8.1",
+    "doctrine/collections": "^2.3",
     "doctrine/dbal": "^3.7.0 || ^4.0",
     "doctrine/doctrine-bundle": "^2.13",
     "doctrine/orm": "^2.20 || ^3.0",
@@ -16,8 +17,10 @@
     "symfony/framework-bundle": "^6.4",
     "tourze/json-rpc-core": "^0.0.6",
     "tourze/enum-extra": "~0.0.5",
+    "tourze/doctrine-snowflake-bundle": "0.0.*",
     "tourze/doctrine-timestamp-bundle": "0.0.*",
     "tourze/doctrine-user-bundle": "0.0.*",
+    "symfony/yaml": "^6.4 || ^7.1",
     "tourze/easy-admin-attribute": "0.0.*"
   },
   "autoload": {
