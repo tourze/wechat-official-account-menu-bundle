@@ -15,12 +15,13 @@
     "symfony/dependency-injection": "^6.4",
     "symfony/http-kernel": "^6.4",
     "symfony/framework-bundle": "^6.4",
+    "symfony/yaml": "^6.4 || ^7.1",
     "tourze/json-rpc-core": "^0.0.6",
     "tourze/enum-extra": "~0.0.5",
     "tourze/doctrine-snowflake-bundle": "0.0.*",
     "tourze/doctrine-timestamp-bundle": "0.0.*",
     "tourze/doctrine-user-bundle": "0.0.*",
-    "symfony/yaml": "^6.4 || ^7.1",
+    "tourze/wechat-official-account-bundle": "0.0.*",
     "tourze/easy-admin-attribute": "0.0.*"
   },
   "autoload": {
