@@ -10,20 +10,24 @@
     "doctrine/doctrine-bundle": "^2.13",
     "doctrine/orm": "^3.0",
     "doctrine/persistence": "^3.1 || ^4",
-    "symfony/event-dispatcher": "^6.4",
     "symfony/config": "^6.4",
     "symfony/dependency-injection": "^6.4",
-    "symfony/http-kernel": "^6.4",
+    "symfony/event-dispatcher": "^6.4",
     "symfony/framework-bundle": "^6.4",
+    "symfony/http-kernel": "^6.4",
     "symfony/yaml": "^6.4 || ^7.1",
-    "tourze/json-rpc-core": "^0.0.6",
-    "tourze/enum-extra": "~0.0.5",
+    "tourze/doctrine-indexed-bundle": "0.0.*",
     "tourze/doctrine-snowflake-bundle": "0.1.*",
     "tourze/doctrine-timestamp-bundle": "0.0.*",
     "tourze/doctrine-user-bundle": "0.0.*",
-    "tourze/wechat-official-account-bundle": "0.0.*",
     "tourze/easy-admin-attribute": "0.1.*",
-    "tourze/doctrine-indexed-bundle": "0.0.*"
+    "tourze/enum-extra": "~0.0.5",
+    "tourze/json-rpc-core": "^0.0.6",
+    "tourze/wechat-official-account-bundle": "0.0.*"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^2.1",
+    "phpunit/phpunit": "^10.0"
   },
   "autoload": {
     "psr-4": {
@@ -34,9 +38,5 @@
     "psr-4": {
       "WechatOfficialAccountMenuBundle\\Tests\\": "tests"
     }
-  },
-  "require-dev": {
-    "phpstan/phpstan": "^2.1",
-    "phpunit/phpunit": "^10.0"
   }
 }
