@@ -2,7 +2,6 @@
 
 namespace WechatOfficialAccountMenuBundle\Entity;
 
-use AntdCpBundle\Attribute\TreeView;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -25,7 +24,7 @@ use Tourze\EasyAdmin\Attribute\Filter\Filterable;
 use Tourze\EasyAdmin\Attribute\Permission\AsPermission;
 use Tourze\EnumExtra\Itemable;
 use Tourze\JsonRPC\Core\Exception\ApiException;
-use WechatOfficialAccountBundle\Trait\AccountAware;
+use WechatOfficialAccountBundle\Entity\Account;
 use WechatOfficialAccountMenuBundle\Enum\MenuType;
 use WechatOfficialAccountMenuBundle\Repository\MenuButtonRepository;
 
@@ -36,13 +35,10 @@ use WechatOfficialAccountMenuBundle\Repository\MenuButtonRepository;
 #[Deletable]
 #[Editable]
 #[Creatable]
-#[TreeView(dataModel: MenuButton::class, targetAttribute: 'parent')]
 #[ORM\Table(name: 'wechat_official_account_menu_button', options: ['comment' => '自定义菜单'])]
 #[ORM\Entity(repositoryClass: MenuButtonRepository::class)]
 class MenuButton implements \Stringable, Itemable
 {
-    use AccountAware;
-
     #[ExportColumn]
     #[ListColumn(order: -1, sorter: true)]
     #[ORM\Id]
@@ -50,6 +46,10 @@ class MenuButton implements \Stringable, Itemable
     #[ORM\CustomIdGenerator(SnowflakeIdGenerator::class)]
     #[ORM\Column(type: Types::BIGINT, nullable: false, options: ['comment' => 'ID'])]
     private ?string $id = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    private Account $account;
 
     #[FormField(span: 12)]
     #[ListColumn]
@@ -132,6 +132,18 @@ class MenuButton implements \Stringable, Itemable
     public function getId(): ?string
     {
         return $this->id;
+    }
+
+    public function getAccount(): Account
+    {
+        return $this->account;
+    }
+
+    public function setAccount(Account $account): static
+    {
+        $this->account = $account;
+
+        return $this;
     }
 
     public function getName(): ?string
