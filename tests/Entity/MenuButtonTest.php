@@ -23,7 +23,7 @@ class MenuButtonTest extends TestCase
     public function testConstructor_shouldInitializeCollection(): void
     {
         // 验证构造函数正确初始化了子菜单集合
-        $this->assertEmpty($this->menuButton->getChildren());
+        $this->assertCount(0, $this->menuButton->getChildren());
         $this->assertInstanceOf(\Doctrine\Common\Collections\Collection::class, $this->menuButton->getChildren());
     }
 

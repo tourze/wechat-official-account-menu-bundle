@@ -47,8 +47,6 @@ class AddConditionalMenuRequestTest extends TestCase
         $this->request->setMatchRule($matchRule);
         
         $options = $this->request->getRequestOptions();
-        
-        $this->assertIsArray($options);
         $this->assertArrayHasKey('json', $options);
         $this->assertArrayHasKey('button', $options['json']);
         $this->assertArrayHasKey('matchrule', $options['json']);

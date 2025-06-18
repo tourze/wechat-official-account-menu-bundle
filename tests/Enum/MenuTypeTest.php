@@ -45,7 +45,6 @@ class MenuTypeTest extends TestCase
             'value' => MenuType::VIEW->value,
         ];
         
-        $this->assertIsArray($result);
         $this->assertArrayHasKey('label', $result);
         $this->assertArrayHasKey('value', $result);
         $this->assertEquals('跳转 URL', $result['label']);
@@ -64,7 +63,6 @@ class MenuTypeTest extends TestCase
             'label' => MenuType::CLICK->getLabel(),
         ];
         
-        $this->assertIsArray($result);
         $this->assertArrayHasKey('id', $result);
         $this->assertArrayHasKey('title', $result);
         $this->assertArrayHasKey('value', $result);

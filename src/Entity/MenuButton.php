@@ -8,18 +8,9 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Tourze\DoctrineSnowflakeBundle\Service\SnowflakeIdGenerator;
 use Tourze\DoctrineTimestampBundle\Traits\TimestampableAware;
-use Tourze\DoctrineUserBundle\Attribute\CreatedByColumn;
-use Tourze\DoctrineUserBundle\Attribute\UpdatedByColumn;
-use Tourze\EasyAdmin\Attribute\Action\Creatable;
-use Tourze\EasyAdmin\Attribute\Action\Deletable;
-use Tourze\EasyAdmin\Attribute\Action\Editable;
-use Tourze\EasyAdmin\Attribute\Column\ExportColumn;
-use Tourze\EasyAdmin\Attribute\Column\ListColumn;
+use Tourze\DoctrineUserBundle\Traits\BlameableAware;
 use Tourze\EasyAdmin\Attribute\Event\BeforeCreate;
 use Tourze\EasyAdmin\Attribute\Event\BeforeEdit;
-use Tourze\EasyAdmin\Attribute\Field\FormField;
-use Tourze\EasyAdmin\Attribute\Filter\Filterable;
-use Tourze\EasyAdmin\Attribute\Permission\AsPermission;
 use Tourze\EnumExtra\Itemable;
 use Tourze\JsonRPC\Core\Exception\ApiException;
 use WechatOfficialAccountBundle\Entity\Account;
@@ -29,17 +20,12 @@ use WechatOfficialAccountMenuBundle\Repository\MenuButtonRepository;
 /**
  * @see https://developers.weixin.qq.com/doc/offiaccount/Custom_Menus/Creating_Custom-Defined_Menu.html
  */
-#[AsPermission(title: '自定义菜单')]
-#[Deletable]
-#[Editable]
-#[Creatable]
 #[ORM\Table(name: 'wechat_official_account_menu_button', options: ['comment' => '自定义菜单'])]
 #[ORM\Entity(repositoryClass: MenuButtonRepository::class)]
 class MenuButton implements \Stringable, Itemable
 {
     use TimestampableAware;
-    #[ExportColumn]
-    #[ListColumn(order: -1, sorter: true)]
+    use BlameableAware;
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(SnowflakeIdGenerator::class)]
@@ -50,19 +36,12 @@ class MenuButton implements \Stringable, Itemable
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private Account $account;
 
-    #[FormField(span: 12)]
-    #[ListColumn]
     #[ORM\Column(type: Types::STRING, length: 40, enumType: MenuType::class, options: ['comment' => '响应动作类型'])]
     private ?MenuType $type = null;
 
-    #[FormField(span: 12)]
-    #[Filterable]
-    #[ListColumn]
     #[ORM\Column(type: Types::STRING, length: 60, options: ['comment' => '菜单标题'])]
     private ?string $name = null;
 
-    #[FormField(title: '上级按钮')]
-    #[ListColumn(title: '上级按钮')]
     #[ORM\ManyToOne(targetEntity: MenuButton::class, inversedBy: 'children')]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     private ?MenuButton $parent = null;
@@ -70,34 +49,23 @@ class MenuButton implements \Stringable, Itemable
     /**
      * 下级分类列表.
      *
-     * @var Collection<\WechatOfficialAccountBundle\Entity\MenuButton>
+     * @var Collection<\WechatOfficialAccountMenuBundle\Entity\MenuButton>
      */
     #[ORM\OneToMany(mappedBy: 'parent', targetEntity: MenuButton::class)]
     private Collection $children;
 
-    #[FormField]
     #[ORM\Column(type: Types::STRING, length: 128, nullable: true, options: ['comment' => '菜单KEY值'])]
     private ?string $clickKey = null;
 
-    #[FormField]
     #[ORM\Column(type: Types::STRING, length: 1024, nullable: true, options: ['comment' => '网页链接'])]
     private ?string $url = null;
 
-    #[FormField]
     #[ORM\Column(type: Types::STRING, length: 120, nullable: true, options: ['comment' => '小程序AppID'])]
     private ?string $appId = null;
 
-    #[FormField]
     #[ORM\Column(type: Types::TEXT, nullable: true, options: ['comment' => '小程序页面路径'])]
     private ?string $pagePath = null;
 
-    #[CreatedByColumn]
-    #[ORM\Column(nullable: true, options: ['comment' => '创建人'])]
-    private ?string $createdBy = null;
-
-    #[UpdatedByColumn]
-    #[ORM\Column(nullable: true, options: ['comment' => '更新人'])]
-    private ?string $updatedBy = null;
 
     public function __construct()
     {
@@ -106,7 +74,7 @@ class MenuButton implements \Stringable, Itemable
 
     public function __toString(): string
     {
-        if (!$this->getId()) {
+        if (null === $this->getId()) {
             return '';
         }
 
@@ -261,44 +229,18 @@ class MenuButton implements \Stringable, Itemable
         return $this;
     }
 
-    public function setCreatedBy(?string $createdBy): self
-    {
-        $this->createdBy = $createdBy;
-
-        return $this;
-    }
-
-    public function getCreatedBy(): ?string
-    {
-        return $this->createdBy;
-    }
-
-    public function setUpdatedBy(?string $updatedBy): self
-    {
-        $this->updatedBy = $updatedBy;
-
-        return $this;
-    }
-
-    public function getUpdatedBy(): ?string
-    {
-        return $this->updatedBy;
-    }/**
+    /**
      * 检查上级跟当前记录，属于同一个Account.
      */
     #[BeforeCreate]
     #[BeforeEdit]
     public function ensureSameAccount(): void
     {
-        if (!$this->getParent()) {
+        if (null === $this->getParent()) {
             return;
         }
 
-        if (!$this->getAccount()) {
-            throw new ApiException('请选择所属公众号');
-        }
-
-        if ($this->getAccount()->getId() !== $this->getParent()->getAccount()?->getId()) {
+        if ($this->getAccount()->getId() !== $this->getParent()->getAccount()->getId()) {
             throw new ApiException('请选择跟上级同样的公众号');
         }
     }
