@@ -9,8 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Tourze\DoctrineSnowflakeBundle\Service\SnowflakeIdGenerator;
 use Tourze\DoctrineTimestampBundle\Traits\TimestampableAware;
 use Tourze\DoctrineUserBundle\Traits\BlameableAware;
-use Tourze\EasyAdmin\Attribute\Event\BeforeCreate;
-use Tourze\EasyAdmin\Attribute\Event\BeforeEdit;
 use Tourze\EnumExtra\Itemable;
 use Tourze\JsonRPC\Core\Exception\ApiException;
 use WechatOfficialAccountBundle\Entity\Account;
@@ -232,8 +230,6 @@ class MenuButton implements \Stringable, Itemable
     /**
      * 检查上级跟当前记录，属于同一个Account.
      */
-    #[BeforeCreate]
-    #[BeforeEdit]
     public function ensureSameAccount(): void
     {
         if (null === $this->getParent()) {
