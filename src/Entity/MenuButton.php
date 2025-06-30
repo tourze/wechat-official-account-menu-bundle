@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Tourze\DoctrineSnowflakeBundle\Service\SnowflakeIdGenerator;
+use Tourze\DoctrineSnowflakeBundle\Traits\SnowflakeKeyAware;
 use Tourze\DoctrineTimestampBundle\Traits\TimestampableAware;
 use Tourze\DoctrineUserBundle\Traits\BlameableAware;
 use Tourze\EnumExtra\Itemable;
@@ -22,13 +22,9 @@ use WechatOfficialAccountMenuBundle\Repository\MenuButtonRepository;
 #[ORM\Entity(repositoryClass: MenuButtonRepository::class)]
 class MenuButton implements \Stringable, Itemable
 {
+    use SnowflakeKeyAware;
     use TimestampableAware;
     use BlameableAware;
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(SnowflakeIdGenerator::class)]
-    #[ORM\Column(type: Types::BIGINT, nullable: false, options: ['comment' => 'ID'])]
-    private ?string $id = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
@@ -79,10 +75,6 @@ class MenuButton implements \Stringable, Itemable
         return "#{$this->getId()} {$this->getName()}";
     }
 
-    public function getId(): ?string
-    {
-        return $this->id;
-    }
 
     public function getAccount(): Account
     {
@@ -258,11 +250,12 @@ class MenuButton implements \Stringable, Itemable
                 $result['sub_button'][] = $child->toWechatFormat();
             }
         } else {
+            $type = $this->getType();
             $result = [
-                'type' => $this->getType()->value,
+                'type' => $type?->value,
                 'name' => $this->getName(),
             ];
-            if (in_array($this->getType(), [
+            if (null !== $type && in_array($type, [
                 MenuType::CLICK,
                 MenuType::SCAN_CODE_PUSH,
                 MenuType::SCAN_CODE_WAIT_MSG,
@@ -274,11 +267,11 @@ class MenuButton implements \Stringable, Itemable
                 $result['key'] = $this->getClickKey();
             }
 
-            if (MenuType::VIEW === $this->getType()) {
+            if (MenuType::VIEW === $type) {
                 $result['url'] = $this->getUrl();
             }
 
-            if (MenuType::MINI_PROGRAM === $this->getType()) {
+            if (MenuType::MINI_PROGRAM === $type) {
                 $result['url'] = $this->getUrl();
                 $result['appid'] = $this->getAppId();
                 $result['pagepath'] = $this->getPagePath();
