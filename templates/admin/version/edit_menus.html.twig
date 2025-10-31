@@ -1,0 +1,199 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+{% trans_default_domain 'WechatOfficialAccountMenu' %}
+
+{% block page_title %}编辑版本菜单 - {{ version.name }}{% endblock %}
+
+{% block content_header_wrapper %}
+    <section class="content-header">
+        <div class="content-header-title">
+            <h1 class="title">编辑版本菜单 - {{ version.name }}</h1>
+        </div>
+
+        <div class="page-actions">
+            <div class="global-actions">
+                <a href="{{ ea_url().setController('WechatOfficialAccountMenuBundle\\Controller\\Admin\\MenuVersionCrudController').setAction('index') }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> 返回版本列表
+                </a>
+                {% if version.status.value == 'DRAFT' %}
+                <a href="{{ ea_url().setController('WechatOfficialAccountMenuBundle\\Controller\\Admin\\MenuVersionCrudController').setAction('publishVersion').setEntityId(version.id) }}"
+                   class="btn btn-success"
+                   onclick="return confirm('确定要发布此版本到微信吗？')">
+                    <i class="fas fa-cloud-upload-alt"></i> 发布到微信
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block page_content %}
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-sitemap"></i> 菜单结构编辑器
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            {{ easyadmin_field(
+                                'menuTree',
+                                null,
+                                {
+                                    customOptions: {
+                                        accountId: version.account.id,
+                                        versionId: version.id,
+                                        dragAndDrop: true,
+                                        maxRootMenus: 3,
+                                        maxSubMenus: 5,
+                                        showPreview: false,
+                                        apiEndpoints: {
+                                            getMenus: path('admin_menu_version_get_menus', {id: version.id}),
+                                            saveMenu: path('admin_menu_version_save_menu', {id: version.id, menuId: '{menuId}'}),
+                                            createMenu: path('admin_menu_version_create_menu', {id: version.id}),
+                                            deleteMenu: path('admin_menu_version_delete_menu', {id: version.id, menuId: '{menuId}'}),
+                                            updatePositions: path('admin_menu_version_update_positions', {id: version.id})
+                                        }
+                                    },
+                                    label: false,
+                                    template_path: '@WechatOfficialAccountMenu/admin/field/menu_tree.html.twig'
+                                },
+                                'WechatOfficialAccountMenuBundle\\Field\\MenuTreeField'
+                            ) }}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-info-circle"></i> 版本信息
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <dl class="row">
+                                <dt class="col-sm-4">版本名称：</dt>
+                                <dd class="col-sm-8">{{ version.name }}</dd>
+                                
+                                <dt class="col-sm-4">所属公众号：</dt>
+                                <dd class="col-sm-8">{{ version.account.name }}</dd>
+                                
+                                <dt class="col-sm-4">版本状态：</dt>
+                                <dd class="col-sm-8">
+                                    <span class="badge badge-{{ version.status.value }}">
+                                        {{ version.status.label }}
+                                    </span>
+                                </dd>
+                                
+                                <dt class="col-sm-4">创建时间：</dt>
+                                <dd class="col-sm-8">{{ version.createTime|date('Y-m-d H:i') }}</dd>
+                                
+                                {% if version.description %}
+                                <dt class="col-sm-4">版本描述：</dt>
+                                <dd class="col-sm-8">{{ version.description }}</dd>
+                                {% endif %}
+                            </dl>
+                        </div>
+                    </div>
+                    
+                    <div class="card mt-3">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-mobile-alt"></i> 菜单预览
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            {{ easyadmin_field(
+                                'menuPreview',
+                                null,
+                                {
+                                    customOptions: {
+                                        menuData: [],
+                                        accountName: version.account.name,
+                                        showMobileFrame: true,
+                                        interactive: true,
+                                        scale: 0.8,
+                                        showMenuInfo: false
+                                    },
+                                    label: false,
+                                    template_path: '@WechatOfficialAccountMenu/admin/field/menu_preview.html.twig'
+                                },
+                                'WechatOfficialAccountMenuBundle\\Field\\MenuPreviewField'
+                            ) }}
+                        </div>
+                    </div>
+                    
+                    <div class="card mt-3">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-question-circle"></i> 帮助说明
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> 一级菜单最多3个</li>
+                                <li><i class="fas fa-check text-success"></i> 每个一级菜单最多5个子菜单</li>
+                                <li><i class="fas fa-check text-success"></i> 菜单名称：一级最多4个汉字，二级最多8个汉字</li>
+                                <li><i class="fas fa-check text-success"></i> 拖拽菜单项可调整顺序</li>
+                                <li><i class="fas fa-check text-success"></i> 只有草稿状态的版本可以编辑</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 监听菜单数据变化，更新预览
+    const menuTreeWrapper = document.querySelector('.menu-tree-field-wrapper');
+    const menuPreviewWrapper = document.querySelector('.menu-preview-field-wrapper');
+    
+    if (menuTreeWrapper && menuPreviewWrapper) {
+        // 创建自定义事件监听
+        menuTreeWrapper.addEventListener('menuDataChanged', function(event) {
+            // 更新预览
+            updateMenuPreview(event.detail.menuData);
+        });
+    }
+    
+    function updateMenuPreview(menuData) {
+        // 转换为微信菜单格式
+        const wechatFormat = convertToWechatFormat(menuData);
+        
+        // 更新预览组件
+        // TODO: 实现预览更新逻辑
+    }
+    
+    function convertToWechatFormat(menuTree) {
+        // 转换菜单树为微信API格式
+        return menuTree.map(menu => {
+            const wechatMenu = {
+                name: menu.name,
+                type: menu.type
+            };
+            
+            if (menu.children && menu.children.length > 0) {
+                wechatMenu.sub_button = menu.children.map(sub => ({
+                    name: sub.name,
+                    type: sub.type,
+                    key: sub.clickKey,
+                    url: sub.url,
+                    appid: sub.appId,
+                    pagepath: sub.pagePath,
+                    media_id: sub.mediaId
+                }));
+            } else {
+                wechatMenu.key = menu.clickKey;
+                wechatMenu.url = menu.url;
+                wechatMenu.appid = menu.appId;
+                wechatMenu.pagepath = menu.pagePath;
+                wechatMenu.media_id = menu.mediaId;
+            }
+            
+            return wechatMenu;
+        });
+    }
+});
+</script>
+{% endblock %}

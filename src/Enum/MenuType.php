@@ -39,7 +39,6 @@ enum MenuType: string implements Labelable, Itemable, Selectable
             self::PIC_SYS_PHOTO => '系统拍照发图',
             self::PIC_PHOTO_ALBUM => '拍照或者相册发图',
             self::PIC_WEIXIN => '微信相册发图',
-
             self::LOCATION_SELECT => '发送位置',
         };
     }

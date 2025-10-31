@@ -2,83 +2,93 @@
 
 namespace WechatOfficialAccountMenuBundle\Tests\Enum;
 
-use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\TestWith;
+use Tourze\PHPUnitEnum\AbstractEnumTestCase;
 use WechatOfficialAccountMenuBundle\Enum\MenuType;
 
-class MenuTypeTest extends TestCase
+/**
+ * @internal
+ */
+#[CoversClass(MenuType::class)]
+final class MenuTypeTest extends AbstractEnumTestCase
 {
-    public function testEnumValues_shouldHaveCorrectValues(): void
+    #[TestWith([MenuType::NONE, 'none', '无'])]
+    #[TestWith([MenuType::VIEW, 'view', '跳转 URL'])]
+    #[TestWith([MenuType::CLICK, 'click', '点击推事件'])]
+    #[TestWith([MenuType::MINI_PROGRAM, 'miniprogram', '小程序'])]
+    #[TestWith([MenuType::SCAN_CODE_PUSH, 'scancode_push', '扫码推事件'])]
+    #[TestWith([MenuType::SCAN_CODE_WAIT_MSG, 'scancode_waitmsg', '扫码带提示'])]
+    #[TestWith([MenuType::PIC_SYS_PHOTO, 'pic_sysphoto', '系统拍照发图'])]
+    #[TestWith([MenuType::PIC_PHOTO_ALBUM, 'pic_photo_or_album', '拍照或者相册发图'])]
+    #[TestWith([MenuType::PIC_WEIXIN, 'pic_weixin', '微信相册发图'])]
+    #[TestWith([MenuType::LOCATION_SELECT, 'location_select', '发送位置'])]
+    public function testValueAndLabelShouldBeCorrect(MenuType $enum, string $expectedValue, string $expectedLabel): void
     {
-        $this->assertEquals('none', MenuType::NONE->value);
-        $this->assertEquals('view', MenuType::VIEW->value);
-        $this->assertEquals('click', MenuType::CLICK->value);
-        $this->assertEquals('miniprogram', MenuType::MINI_PROGRAM->value);
-        $this->assertEquals('scancode_push', MenuType::SCAN_CODE_PUSH->value);
-        $this->assertEquals('scancode_waitmsg', MenuType::SCAN_CODE_WAIT_MSG->value);
-        $this->assertEquals('pic_sysphoto', MenuType::PIC_SYS_PHOTO->value);
-        $this->assertEquals('pic_photo_or_album', MenuType::PIC_PHOTO_ALBUM->value);
-        $this->assertEquals('pic_weixin', MenuType::PIC_WEIXIN->value);
-        $this->assertEquals('location_select', MenuType::LOCATION_SELECT->value);
+        $this->assertEquals($expectedValue, $enum->value);
+        $this->assertEquals($expectedLabel, $enum->getLabel());
     }
 
-    public function testGetLabel_shouldReturnCorrectLabels(): void
+    public function testValuesShouldBeUnique(): void
     {
-        $this->assertEquals('无', MenuType::NONE->getLabel());
-        $this->assertEquals('跳转 URL', MenuType::VIEW->getLabel());
-        $this->assertEquals('点击推事件', MenuType::CLICK->getLabel());
-        $this->assertEquals('小程序', MenuType::MINI_PROGRAM->getLabel());
-        $this->assertEquals('扫码推事件', MenuType::SCAN_CODE_PUSH->getLabel());
-        $this->assertEquals('扫码带提示', MenuType::SCAN_CODE_WAIT_MSG->getLabel());
-        $this->assertEquals('系统拍照发图', MenuType::PIC_SYS_PHOTO->getLabel());
-        $this->assertEquals('拍照或者相册发图', MenuType::PIC_PHOTO_ALBUM->getLabel());
-        $this->assertEquals('微信相册发图', MenuType::PIC_WEIXIN->getLabel());
-        $this->assertEquals('发送位置', MenuType::LOCATION_SELECT->getLabel());
+        $cases = MenuType::cases();
+        $values = array_map(fn (MenuType $case) => $case->value, $cases);
+
+        $this->assertEquals(array_unique($values), $values, 'Enum values should be unique');
+        $this->assertCount(10, array_unique($values));
     }
 
-    /**
-     * 测试SelectTrait提供的方法（如果可用）
-     */
-    public function testToArray_fromSelectTrait_shouldReturnArrayWithLabelAndValue(): void
+    public function testLabelsShouldBeUnique(): void
     {
-        $result = [
-            'label' => MenuType::VIEW->getLabel(),
-            'value' => MenuType::VIEW->value,
+        $cases = MenuType::cases();
+        $labels = array_map(fn (MenuType $case) => $case->getLabel(), $cases);
+
+        $this->assertEquals(array_unique($labels), $labels, 'Enum labels should be unique');
+        $this->assertCount(10, array_unique($labels));
+    }
+
+    public function testToSelectItemShouldReturnCorrectFormat(): void
+    {
+        $selectItem = MenuType::VIEW->toSelectItem();
+
+        $this->assertIsArray($selectItem);
+        $this->assertArrayHasKey('label', $selectItem);
+        $this->assertArrayHasKey('value', $selectItem);
+        $this->assertEquals('跳转 URL', $selectItem['label']);
+        $this->assertEquals('view', $selectItem['value']);
+    }
+
+    public function testAllCasesShouldBeAvailable(): void
+    {
+        $cases = MenuType::cases();
+
+        $this->assertCount(10, $cases);
+        $this->assertContainsOnlyInstancesOf(MenuType::class, $cases);
+
+        $expectedCases = [
+            MenuType::NONE,
+            MenuType::VIEW,
+            MenuType::CLICK,
+            MenuType::MINI_PROGRAM,
+            MenuType::SCAN_CODE_PUSH,
+            MenuType::SCAN_CODE_WAIT_MSG,
+            MenuType::PIC_SYS_PHOTO,
+            MenuType::PIC_PHOTO_ALBUM,
+            MenuType::PIC_WEIXIN,
+            MenuType::LOCATION_SELECT,
         ];
-        
-        $this->assertArrayHasKey('label', $result);
-        $this->assertArrayHasKey('value', $result);
-        $this->assertEquals('跳转 URL', $result['label']);
-        $this->assertEquals('view', $result['value']);
+
+        $this->assertEquals($expectedCases, $cases);
     }
 
-    /**
-     * 测试ItemTrait提供的方法（如果可用）
-     */
-    public function testItemStructure_fromItemTrait_shouldHaveCorrectFormat(): void
+    public function testToArrayShouldReturnArrayWithValueAndLabel(): void
     {
-        $result = [
-            'id' => MenuType::CLICK->value,
-            'title' => MenuType::CLICK->getLabel(),
-            'value' => MenuType::CLICK->value,
-            'label' => MenuType::CLICK->getLabel(),
-        ];
-        
-        $this->assertArrayHasKey('id', $result);
-        $this->assertArrayHasKey('title', $result);
+        $result = MenuType::CLICK->toArray();
+
+        $this->assertIsArray($result);
         $this->assertArrayHasKey('value', $result);
         $this->assertArrayHasKey('label', $result);
-        
-        $this->assertEquals('click', $result['id']);
-        $this->assertEquals('点击推事件', $result['title']);
         $this->assertEquals('click', $result['value']);
         $this->assertEquals('点击推事件', $result['label']);
     }
-
-    public function testSelectable_casesMethodShouldReturnAllCases(): void
-    {
-        $cases = MenuType::cases();
-        
-        $this->assertCount(10, $cases);
-        $this->assertContainsOnlyInstancesOf(MenuType::class, $cases);
-    }
-} 
+}

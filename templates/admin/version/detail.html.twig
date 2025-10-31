@@ -1,0 +1,133 @@
+{% extends '@EasyAdmin/crud/detail.html.twig' %}
+
+{% block body_class 'ea-crud-detail wechat-menu-version-detail' %}
+
+{% block content_title %}
+    <span class="fa fa-code-branch"></span>
+    菜单版本详情 - {{ entity.instance.name }}
+{% endblock %}
+
+{% block detail_fields %}
+    {{ parent() }}
+    
+    <div class="menu-version-actions mt-4">
+        <h5>版本操作</h5>
+        <div class="btn-group" role="group">
+            {% for action in entity.actions %}
+                {% if action.name in ['publish', 'clone', 'editMenus'] %}
+                    {{ include(action.templatePath, {action: action, entity: entity}, with_context = false) }}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    
+    {% if entity.instance.buttons is not empty %}
+        <div class="menu-structure mt-4">
+            <h5>菜单结构预览</h5>
+            <div class="menu-preview-container">
+                {% set buttons = entity.instance.buttons %}
+                {% for button in buttons %}
+                    {% if button.parent is null %}
+                        <div class="menu-button level-1">
+                            <div class="button-info">
+                                <span class="button-name">{{ button.name }}</span>
+                                <span class="button-type badge badge-{{ button.type.value }}">{{ button.type.value }}</span>
+                                {% if not button.enabled %}
+                                    <span class="badge badge-warning">禁用</span>
+                                {% endif %}
+                            </div>
+                            
+                            {% if button.children is not empty %}
+                                <div class="sub-buttons">
+                                    {% for child in button.children %}
+                                        <div class="menu-button level-2">
+                                            <div class="button-info">
+                                                <span class="button-name">{{ child.name }}</span>
+                                                <span class="button-type badge badge-{{ child.type.value }}">{{ child.type.value }}</span>
+                                                {% if not child.enabled %}
+                                                    <span class="badge badge-warning">禁用</span>
+                                                {% endif %}
+                                            </div>
+                                            {% if child.type.value == 'click' and child.clickKey %}
+                                                <div class="button-detail">KEY: {{ child.clickKey }}</div>
+                                            {% elseif child.type.value == 'view' and child.url %}
+                                                <div class="button-detail">URL: {{ child.url }}</div>
+                                            {% elseif child.type.value == 'miniprogram' and child.appId %}
+                                                <div class="button-detail">AppID: {{ child.appId }}</div>
+                                                {% if child.pagePath %}
+                                                    <div class="button-detail">页面: {{ child.pagePath }}</div>
+                                                {% endif %}
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block head_stylesheets %}
+    {{ parent() }}
+    <style>
+        .menu-version-actions .btn-group {
+            margin-top: 10px;
+        }
+        
+        .menu-preview-container {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        
+        .menu-button {
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 6px;
+            background-color: white;
+            border: 1px solid #eee;
+        }
+        
+        .menu-button.level-1 {
+            border-left: 4px solid #007bff;
+        }
+        
+        .menu-button.level-2 {
+            margin-left: 20px;
+            border-left: 4px solid #28a745;
+            margin-top: 5px;
+        }
+        
+        .button-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+        
+        .button-name {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .button-detail {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .badge-click { background-color: #007bff; }
+        .badge-view { background-color: #28a745; }
+        .badge-miniprogram { background-color: #17a2b8; }
+        .badge-media_id { background-color: #ffc107; color: #000; }
+        .badge-view_limited { background-color: #6c757d; }
+        
+        .sub-buttons {
+            margin-top: 10px;
+        }
+    </style>
+{% endblock %}

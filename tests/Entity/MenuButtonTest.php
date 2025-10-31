@@ -1,193 +1,287 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WechatOfficialAccountMenuBundle\Tests\Entity;
 
-use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Tourze\PHPUnitDoctrineEntity\AbstractEntityTestCase;
 use WechatOfficialAccountBundle\Entity\Account;
 use WechatOfficialAccountMenuBundle\Entity\MenuButton;
 use WechatOfficialAccountMenuBundle\Enum\MenuType;
+use WechatOfficialAccountMenuBundle\Exception\MenuValidationException;
 
-class MenuButtonTest extends TestCase
+/**
+ * @internal
+ */
+#[CoversClass(MenuButton::class)]
+final class MenuButtonTest extends AbstractEntityTestCase
 {
-    private MenuButton $menuButton;
-    private Account $account;
-
-    protected function setUp(): void
+    protected function createEntity(): MenuButton
     {
-        $this->menuButton = new MenuButton();
-        
-        $this->account = $this->createMock(Account::class);
-        $this->account->method('getId')->willReturn(123456);
+        return new MenuButton();
     }
 
-    public function testConstructor_shouldInitializeCollection(): void
+    private function createAccount(string $id = '1'): Account
     {
-        // 验证构造函数正确初始化了子菜单集合
-        $this->assertCount(0, $this->menuButton->getChildren());
-        $this->assertInstanceOf(\Doctrine\Common\Collections\Collection::class, $this->menuButton->getChildren());
-    }
-
-    public function testSetGetName_shouldWorkCorrectly(): void
-    {
-        $name = '测试菜单';
-        $this->menuButton->setName($name);
-        
-        $this->assertEquals($name, $this->menuButton->getName());
-    }
-
-    public function testSetGetAccount_shouldWorkCorrectly(): void
-    {
-        $this->menuButton->setAccount($this->account);
-        
-        $this->assertSame($this->account, $this->menuButton->getAccount());
-    }
-
-    public function testSetGetType_shouldWorkCorrectly(): void
-    {
-        $type = MenuType::VIEW;
-        $this->menuButton->setType($type);
-        
-        $this->assertSame($type, $this->menuButton->getType());
-    }
-
-    public function testSetGetClickKey_shouldWorkCorrectly(): void
-    {
-        $key = 'test_key';
-        $this->menuButton->setClickKey($key);
-        
-        $this->assertEquals($key, $this->menuButton->getClickKey());
-    }
-
-    public function testSetGetUrl_shouldWorkCorrectly(): void
-    {
-        $url = 'https://example.com';
-        $this->menuButton->setUrl($url);
-        
-        $this->assertEquals($url, $this->menuButton->getUrl());
-    }
-
-    public function testSetGetAppId_shouldWorkCorrectly(): void
-    {
-        $appId = 'wx123456789';
-        $this->menuButton->setAppId($appId);
-        
-        $this->assertEquals($appId, $this->menuButton->getAppId());
-    }
-
-    public function testSetGetPagePath_shouldWorkCorrectly(): void
-    {
-        $pagePath = 'pages/index/index';
-        $this->menuButton->setPagePath($pagePath);
-        
-        $this->assertEquals($pagePath, $this->menuButton->getPagePath());
-    }
-
-    public function testGetTitle_shouldReturnName(): void
-    {
-        $name = '测试菜单';
-        $this->menuButton->setName($name);
-        
-        // getTitle 方法应返回 getName 相同的值
-        $this->assertEquals($name, $this->menuButton->getTitle());
-        $this->assertEquals($this->menuButton->getName(), $this->menuButton->getTitle());
-    }
-
-    public function testToString_withoutId_shouldReturnEmptyString(): void
-    {
-        // ID为null时应返回空字符串
-        $this->assertEquals('', (string)$this->menuButton);
-    }
-
-    public function testToString_withId_shouldReturnFormattedString(): void
-    {
-        // 使用反射设置私有属性ID
-        $reflection = new \ReflectionClass($this->menuButton);
+        $account = new Account();
+        $reflection = new \ReflectionClass($account);
         $property = $reflection->getProperty('id');
-        $property->setAccessible(true);
-        $property->setValue($this->menuButton, '123');
-        
-        $this->menuButton->setName('测试菜单');
-        
-        $this->assertEquals('#123 测试菜单', (string)$this->menuButton);
+        $property->setValue($account, $id);
+
+        return $account;
     }
 
-    public function testToSelectItem_shouldReturnCorrectArray(): void
+    public function testConstruct(): void
     {
-        // 使用反射设置私有属性ID
-        $reflection = new \ReflectionClass($this->menuButton);
+        $menuButton = new MenuButton();
+
+        self::assertCount(0, $menuButton->getChildren());
+        self::assertSame(0, $menuButton->getPosition());
+        self::assertTrue($menuButton->isEnabled());
+    }
+
+    public function testToString(): void
+    {
+        $menuButton = new MenuButton();
+        self::assertSame('', (string) $menuButton);
+
+        $menuButton->setName('首页');
+        $reflection = new \ReflectionClass($menuButton);
         $property = $reflection->getProperty('id');
-        $property->setAccessible(true);
-        $property->setValue($this->menuButton, '123');
-        
-        $this->menuButton->setName('测试菜单');
-        
-        $result = $this->menuButton->toSelectItem();
-        
-        // 首先断言数组包含必要的键
-        $this->assertArrayHasKey('value', $result);
-        $this->assertArrayHasKey('label', $result);
-        $this->assertArrayHasKey('text', $result);
-        
-        // 然后断言关键值是否正确
-        $this->assertEquals('123', $result['value']);
-        $this->assertEquals('测试菜单', $result['label']);
-        $this->assertEquals('测试菜单', $result['text']);
+        $property->setValue($menuButton, '123');
+
+        self::assertSame('#123 首页', (string) $menuButton);
     }
 
-    public function testToWechatFormat_withoutChildren_shouldReturnCorrectFormat(): void
+    public function testBasicGettersAndSetters(): void
     {
-        $this->menuButton->setName('测试菜单');
-        $this->menuButton->setType(MenuType::VIEW);
-        $this->menuButton->setUrl('https://example.com');
-        
-        $expected = [
-            'name' => '测试菜单',
-            'type' => 'view',
-            'url' => 'https://example.com',
-        ];
-        
-        $this->assertEquals($expected, $this->menuButton->toWechatFormat());
+        $account = $this->createAccount();
+        $menuButton = new MenuButton();
+
+        $menuButton->setAccount($account);
+        self::assertSame($account, $menuButton->getAccount());
+
+        $menuButton->setName('测试菜单');
+        self::assertSame('测试菜单', $menuButton->getName());
+        self::assertSame('测试菜单', $menuButton->getTitle());
+
+        $menuButton->setType(MenuType::CLICK);
+        self::assertSame(MenuType::CLICK, $menuButton->getType());
+
+        $menuButton->setClickKey('TEST_KEY');
+        self::assertSame('TEST_KEY', $menuButton->getClickKey());
+
+        $menuButton->setUrl('https://example.com');
+        self::assertSame('https://example.com', $menuButton->getUrl());
+
+        $menuButton->setAppId('wx123456');
+        self::assertSame('wx123456', $menuButton->getAppId());
+
+        $menuButton->setPagePath('pages/index/index');
+        self::assertSame('pages/index/index', $menuButton->getPagePath());
+
+        $menuButton->setMediaId('media_123');
+        self::assertSame('media_123', $menuButton->getMediaId());
+
+        $menuButton->setPosition(10);
+        self::assertSame(10, $menuButton->getPosition());
+
+        $menuButton->setEnabled(false);
+        self::assertFalse($menuButton->isEnabled());
     }
 
-    public function testToWechatFormat_withClickType_shouldIncludeKey(): void
+    public function testParentChildRelationship(): void
     {
-        $this->menuButton->setName('点击菜单');
-        $this->menuButton->setType(MenuType::CLICK);
-        $this->menuButton->setClickKey('click_key_value');
-        
-        $expected = [
-            'name' => '点击菜单',
-            'type' => 'click',
-            'key' => 'click_key_value',
-        ];
-        
-        $this->assertEquals($expected, $this->menuButton->toWechatFormat());
+        $parent = new MenuButton();
+        $child1 = new MenuButton();
+        $child2 = new MenuButton();
+
+        $parent->addChild($child1);
+        $parent->addChild($child2);
+
+        self::assertCount(2, $parent->getChildren());
+        self::assertTrue($parent->getChildren()->contains($child1));
+        self::assertTrue($parent->getChildren()->contains($child2));
+        self::assertSame($parent, $child1->getParent());
+        self::assertSame($parent, $child2->getParent());
+
+        // Test adding same child twice
+        $parent->addChild($child1);
+        self::assertCount(2, $parent->getChildren());
+
+        $parent->removeChild($child1);
+        self::assertCount(1, $parent->getChildren());
+        self::assertFalse($parent->getChildren()->contains($child1));
+        self::assertNull($child1->getParent());
     }
 
-    public function testToWechatFormat_withMiniProgramType_shouldIncludeAppIdAndPagePath(): void
+    public function testEnsureSameAccount(): void
     {
-        $this->menuButton->setName('小程序菜单');
-        $this->menuButton->setType(MenuType::MINI_PROGRAM);
-        $this->menuButton->setAppId('wx123456789');
-        $this->menuButton->setPagePath('pages/index/index');
-        $this->menuButton->setUrl('https://example.com'); // 兜底链接
-        
-        $expected = [
-            'name' => '小程序菜单',
+        $account1 = $this->createAccount('1');
+        $account2 = $this->createAccount('2');
+
+        $parent = new MenuButton();
+        $parent->setAccount($account1);
+
+        $child = new MenuButton();
+        $child->setAccount($account2);
+        $child->setParent($parent);
+
+        $this->expectException(MenuValidationException::class);
+        $this->expectExceptionMessage('请选择跟上级同样的公众号');
+
+        $child->ensureSameAccount();
+    }
+
+    public function testEnsureSameAccountWithSameAccount(): void
+    {
+        $account = $this->createAccount();
+
+        $parent = new MenuButton();
+        $parent->setAccount($account);
+
+        $child = new MenuButton();
+        $child->setAccount($account);
+        $child->setParent($parent);
+
+        $child->ensureSameAccount();
+        // No exception thrown - test passes
+        self::assertSame($account, $child->getAccount());
+    }
+
+    public function testEnsureSameAccountWithNoParent(): void
+    {
+        $account = $this->createAccount();
+        $menuButton = new MenuButton();
+        $menuButton->setAccount($account);
+
+        $menuButton->ensureSameAccount();
+        // No exception thrown - test passes
+        self::assertNull($menuButton->getParent());
+    }
+
+    public function testToSelectItem(): void
+    {
+        $menuButton = new MenuButton();
+        $menuButton->setName('测试菜单');
+        $reflection = new \ReflectionClass($menuButton);
+        $property = $reflection->getProperty('id');
+        $property->setValue($menuButton, '123');
+
+        $item = $menuButton->toSelectItem();
+
+        self::assertSame([
+            'label' => '测试菜单',
+            'text' => '测试菜单',
+            'value' => '123',
+        ], $item);
+    }
+
+    public function testToWechatFormatForParentMenu(): void
+    {
+        $parent = new MenuButton();
+        $parent->setName('父菜单');
+
+        $child1 = new MenuButton();
+        $child1->setName('子菜单1');
+        $child1->setType(MenuType::CLICK);
+        $child1->setClickKey('SUB_1');
+        $child1->setEnabled(true);
+
+        $child2 = new MenuButton();
+        $child2->setName('子菜单2');
+        $child2->setType(MenuType::VIEW);
+        $child2->setUrl('https://example.com');
+        $child2->setEnabled(false);
+
+        $parent->addChild($child1);
+        $parent->addChild($child2);
+
+        $result = $parent->toWechatFormat();
+
+        self::assertSame([
+            'name' => '父菜单',
+            'sub_button' => [
+                [
+                    'type' => 'click',
+                    'name' => '子菜单1',
+                    'key' => 'SUB_1',
+                ],
+            ],
+        ], $result);
+    }
+
+    public function testToWechatFormatForClickType(): void
+    {
+        $menuButton = new MenuButton();
+        $menuButton->setName('测试菜单');
+        $menuButton->setType(MenuType::CLICK);
+        $menuButton->setClickKey('TEST_KEY');
+
+        $result = $menuButton->toWechatFormat();
+
+        self::assertSame(['type' => 'click', 'name' => '测试菜单', 'key' => 'TEST_KEY'], $result);
+    }
+
+    public function testToWechatFormatForViewType(): void
+    {
+        $menuButton = new MenuButton();
+        $menuButton->setName('测试菜单');
+        $menuButton->setType(MenuType::VIEW);
+        $menuButton->setUrl('https://example.com');
+
+        $result = $menuButton->toWechatFormat();
+
+        self::assertSame(['type' => 'view', 'name' => '测试菜单', 'url' => 'https://example.com'], $result);
+    }
+
+    public function testToWechatFormatForMiniProgramType(): void
+    {
+        $menuButton = new MenuButton();
+        $menuButton->setName('测试菜单');
+        $menuButton->setType(MenuType::MINI_PROGRAM);
+        $menuButton->setUrl('https://example.com');
+        $menuButton->setAppId('wx123');
+        $menuButton->setPagePath('pages/index');
+
+        $result = $menuButton->toWechatFormat();
+
+        self::assertSame([
             'type' => 'miniprogram',
+            'name' => '测试菜单',
             'url' => 'https://example.com',
-            'appid' => 'wx123456789',
-            'pagepath' => 'pages/index/index',
-        ];
-        
-        $this->assertEquals($expected, $this->menuButton->toWechatFormat());
+            'appid' => 'wx123',
+            'pagepath' => 'pages/index',
+        ], $result);
     }
-    
-    public function testEnsureSameAccount_shouldDoNothing_whenNoParent(): void
+
+    public function testToWechatFormatForScanCodePushType(): void
     {
-        // 没有父菜单时不应抛出异常
-        $this->menuButton->setAccount($this->account);
-        $this->menuButton->ensureSameAccount();
-        $this->expectNotToPerformAssertions();
+        $menuButton = new MenuButton();
+        $menuButton->setName('测试菜单');
+        $menuButton->setType(MenuType::SCAN_CODE_PUSH);
+        $menuButton->setClickKey('SCAN_KEY');
+
+        $result = $menuButton->toWechatFormat();
+
+        self::assertSame(['type' => 'scancode_push', 'name' => '测试菜单', 'key' => 'SCAN_KEY'], $result);
     }
-} 
+
+    /**
+     * @return iterable<string, array{string, mixed}>
+     */
+    public static function propertiesProvider(): iterable
+    {
+        yield 'name' => ['name', '测试菜单'];
+        yield 'type' => ['type', MenuType::CLICK];
+        yield 'clickKey' => ['clickKey', 'TEST_KEY'];
+        yield 'url' => ['url', 'https://example.com'];
+        yield 'appId' => ['appId', 'wx123456'];
+        yield 'pagePath' => ['pagePath', 'pages/index/index'];
+        yield 'mediaId' => ['mediaId', 'media_123'];
+        yield 'position' => ['position', 10];
+        yield 'enabled' => ['enabled', false];
+    }
+}

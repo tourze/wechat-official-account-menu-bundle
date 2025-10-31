@@ -1,0 +1,132 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block body_class 'ea-crud-form wechat-menu-import' %}
+
+{% block content_title %}
+    <span class="fa fa-upload"></span>
+    导入菜单
+{% endblock %}
+
+{% block main %}
+    <div class="menu-import-container">
+        <div class="card">
+            <div class="card-header">
+                <h4>从微信公众平台导入菜单</h4>
+            </div>
+            <div class="card-body">
+                <form id="import-form" method="post" action="{{ ea_url() }}">
+                    <div class="form-group">
+                        <label for="account">选择公众号</label>
+                        <select class="form-control" id="account" name="account" required>
+                            <option value="">请选择公众号</option>
+                            {# TODO: 这里需要从控制器传入可用的公众号列表 #}
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>导入选项</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="override_existing" name="override_existing" value="1">
+                            <label class="form-check-label" for="override_existing">
+                                覆盖现有菜单（如果不选择，会保留现有菜单）
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">
+                            <span class="fa fa-download"></span>
+                            导入菜单
+                        </button>
+                        <a href="{{ ea_url().setAction('index') }}" class="btn btn-secondary">
+                            <span class="fa fa-times"></span>
+                            取消
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-header">
+                <h4>使用说明</h4>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li><span class="fa fa-info-circle text-info"></span> 导入功能会从微信公众平台获取当前的菜单配置</li>
+                    <li><span class="fa fa-info-circle text-info"></span> 如果选择"覆盖现有菜单"，系统会删除该公众号的所有现有菜单</li>
+                    <li><span class="fa fa-info-circle text-info"></span> 导入的菜单会保持微信平台上的结构和配置</li>
+                    <li><span class="fa fa-warning text-warning"></span> 请确保已正确配置公众号的AppID和AppSecret</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block body_javascript %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('import-form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    const account = document.getElementById('account').value;
+                    if (!account) {
+                        alert('请选择公众号');
+                        e.preventDefault();
+                        return;
+                    }
+                    
+                    if (!confirm('确定要导入菜单吗？此操作可能会影响现有菜单配置。')) {
+                        e.preventDefault();
+                        return;
+                    }
+                });
+            }
+        });
+    </script>
+{% endblock %}
+
+{% block head_stylesheets %}
+    {{ parent() }}
+    <style>
+        .menu-import-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        
+        .card-header {
+            background-color: #f8f9fa;
+            padding: 15px 20px;
+            border-bottom: 1px solid #ddd;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-check {
+            margin-top: 10px;
+        }
+        
+        .list-unstyled li {
+            margin-bottom: 10px;
+            padding: 5px 0;
+        }
+        
+        .list-unstyled li .fa {
+            margin-right: 8px;
+        }
+    </style>
+{% endblock %}

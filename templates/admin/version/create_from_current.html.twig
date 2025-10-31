@@ -1,0 +1,159 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block body_class 'ea-crud-form wechat-menu-version-create' %}
+
+{% block content_title %}
+    <span class="fa fa-copy"></span>
+    基于当前菜单创建版本
+{% endblock %}
+
+{% block main %}
+    <div class="version-create-container">
+        <div class="card">
+            <div class="card-header">
+                <h4>创建菜单版本</h4>
+            </div>
+            <div class="card-body">
+                <form id="create-version-form" method="post" action="{{ ea_url().setAction('createFromCurrent') }}">
+                    <div class="form-group">
+                        <label for="account">选择公众号 <span class="text-danger">*</span></label>
+                        <select class="form-control" id="account" name="account" required>
+                            <option value="">请选择公众号</option>
+                            {# TODO: 这里需要从控制器传入可用的公众号列表 #}
+                        </select>
+                        <small class="form-text text-muted">将基于该公众号当前的菜单结构创建版本</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="version_name">版本名称 <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="version_name" name="version_name" required
+                               placeholder="例如：V1.0.0 或 2024年春节版本">
+                        <small class="form-text text-muted">为版本起一个易于识别的名称</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="description">版本描述</label>
+                        <textarea class="form-control" id="description" name="description" rows="4"
+                                  placeholder="描述此版本的主要特性或变更内容..."></textarea>
+                        <small class="form-text text-muted">可选，帮助团队了解此版本的用途</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="create_as_draft" name="create_as_draft" value="1" checked>
+                            <label class="form-check-label" for="create_as_draft">
+                                创建为草稿状态
+                            </label>
+                            <small class="form-text text-muted">草稿状态可以继续编辑，发布后不能修改</small>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">
+                            <span class="fa fa-plus"></span>
+                            创建版本
+                        </button>
+                        <a href="{{ ea_url().setAction('index') }}" class="btn btn-secondary">
+                            <span class="fa fa-times"></span>
+                            取消
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-header">
+                <h4>操作说明</h4>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li><span class="fa fa-info-circle text-info"></span> 系统会基于选定公众号当前的菜单结构创建一个新版本</li>
+                    <li><span class="fa fa-info-circle text-info"></span> 新版本默认为草稿状态，可以继续编辑和调整</li>
+                    <li><span class="fa fa-info-circle text-info"></span> 版本创建后，可以在版本管理中查看和管理</li>
+                    <li><span class="fa fa-info-circle text-info"></span> 发布版本后，菜单会同步到微信公众平台</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block body_javascript %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('create-version-form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    const account = document.getElementById('account').value;
+                    const versionName = document.getElementById('version_name').value;
+                    
+                    if (!account) {
+                        alert('请选择公众号');
+                        e.preventDefault();
+                        return;
+                    }
+                    
+                    if (!versionName.trim()) {
+                        alert('请输入版本名称');
+                        e.preventDefault();
+                        return;
+                    }
+                    
+                    if (!confirm('确定要基于当前菜单创建新版本吗？')) {
+                        e.preventDefault();
+                        return;
+                    }
+                });
+            }
+        });
+    </script>
+{% endblock %}
+
+{% block head_stylesheets %}
+    {{ parent() }}
+    <style>
+        .version-create-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        
+        .card-header {
+            background-color: #f8f9fa;
+            padding: 15px 20px;
+            border-bottom: 1px solid #ddd;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-check {
+            margin-top: 10px;
+        }
+        
+        .text-danger {
+            color: #dc3545;
+        }
+        
+        .list-unstyled li {
+            margin-bottom: 10px;
+            padding: 5px 0;
+        }
+        
+        .list-unstyled li .fa {
+            margin-right: 8px;
+        }
+    </style>
+{% endblock %}

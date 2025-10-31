@@ -1,0 +1,189 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block body_class 'ea-crud-form wechat-menu-version-compare' %}
+
+{% block content_title %}
+    <span class="fa fa-exchange"></span>
+    菜单版本对比
+{% endblock %}
+
+{% block main %}
+    <div class="version-compare-container">
+        <div class="card">
+            <div class="card-header">
+                <h4>选择要对比的版本</h4>
+            </div>
+            <div class="card-body">
+                <form id="compare-form" method="post" action="{{ ea_url().setAction('compareVersions') }}">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="version_a">版本 A</label>
+                                <select class="form-control" id="version_a" name="version_a" required>
+                                    <option value="">请选择版本</option>
+                                    {# TODO: 这里需要从控制器传入可用的版本列表 #}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="version_b">版本 B</label>
+                                <select class="form-control" id="version_b" name="version_b" required>
+                                    <option value="">请选择版本</option>
+                                    {# TODO: 这里需要从控制器传入可用的版本列表 #}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">
+                            <span class="fa fa-exchange"></span>
+                            开始对比
+                        </button>
+                        <a href="{{ ea_url().setAction('index') }}" class="btn btn-secondary">
+                            <span class="fa fa-arrow-left"></span>
+                            返回列表
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div id="compare-result" class="card mt-4" style="display: none;">
+            <div class="card-header">
+                <h4>对比结果</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>版本 A</h5>
+                        <div id="version-a-content" class="version-content"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>版本 B</h5>
+                        <div id="version-b-content" class="version-content"></div>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <h5>差异说明</h5>
+                    <div id="diff-summary" class="diff-summary"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block body_javascript %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('compare-form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const versionA = document.getElementById('version_a').value;
+                    const versionB = document.getElementById('version_b').value;
+                    
+                    if (!versionA || !versionB) {
+                        alert('请选择两个版本进行对比');
+                        return;
+                    }
+                    
+                    if (versionA === versionB) {
+                        alert('请选择不同的版本进行对比');
+                        return;
+                    }
+                    
+                    // 这里应该发起AJAX请求获取对比结果
+                    // TODO: 实现版本对比的后端接口和前端展示逻辑
+                    compareVersions(versionA, versionB);
+                });
+            }
+        });
+        
+        function compareVersions(versionA, versionB) {
+            // 显示对比结果区域
+            document.getElementById('compare-result').style.display = 'block';
+            
+            // 模拟对比结果（实际应该从后端获取）
+            document.getElementById('version-a-content').innerHTML = '<div class="text-muted">加载中...</div>';
+            document.getElementById('version-b-content').innerHTML = '<div class="text-muted">加载中...</div>';
+            document.getElementById('diff-summary').innerHTML = '<div class="text-muted">分析差异中...</div>';
+            
+            // TODO: 实现真实的版本对比逻辑
+        }
+    </script>
+{% endblock %}
+
+{% block head_stylesheets %}
+    {{ parent() }}
+    <style>
+        .version-compare-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        
+        .card-header {
+            background-color: #f8f9fa;
+            padding: 15px 20px;
+            border-bottom: 1px solid #ddd;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .version-content {
+            border: 1px solid #eee;
+            border-radius: 4px;
+            padding: 15px;
+            min-height: 200px;
+            background-color: #f9f9f9;
+        }
+        
+        .diff-summary {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            background-color: #fff;
+        }
+        
+        .diff-added {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin: 5px 0;
+        }
+        
+        .diff-removed {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin: 5px 0;
+        }
+        
+        .diff-modified {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin: 5px 0;
+        }
+    </style>
+{% endblock %}

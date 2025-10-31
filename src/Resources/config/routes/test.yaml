@@ -1,0 +1,8 @@
+# 测试环境专用路由配置
+# 加载symfony-testing-framework的SecurityController以提供app_login路由
+
+symfony_testing_framework_controllers:
+  resource:
+    path: '%kernel.project_dir%/packages/symfony-testing-framework/src/Controller/'
+    namespace: SymfonyTestingFramework\Controller
+  type: attribute

@@ -2,39 +2,47 @@
 
 namespace WechatOfficialAccountMenuBundle\Tests\Request;
 
-use PHPUnit\Framework\TestCase;
+use HttpClientBundle\Tests\Request\RequestTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use WechatOfficialAccountBundle\Entity\Account;
-use WechatOfficialAccountMenuBundle\Request\AddConditionalMenuRequest;
+use WechatOfficialAccountMenuBundle\Request\Menu\AddConditionalMenuRequest;
 
-class AddConditionalMenuRequestTest extends TestCase
+/**
+ * @internal
+ */
+#[CoversClass(AddConditionalMenuRequest::class)]
+final class AddConditionalMenuRequestTest extends RequestTestCase
 {
     private AddConditionalMenuRequest $request;
+
     private Account $account;
 
     protected function setUp(): void
     {
+        parent::setUp();
         $this->request = new AddConditionalMenuRequest();
-        
-        $this->account = $this->createMock(Account::class);
-        $this->account->method('getAccessToken')->willReturn('test_access_token');
+        $this->account = new Account();
     }
 
-    public function testGetRequestPath_shouldReturnCorrectUrl(): void
+    public function testGetRequestPathShouldReturnCorrectUrl(): void
     {
         $expected = 'https://api.weixin.qq.com/cgi-bin/menu/addconditional';
         $this->assertEquals($expected, $this->request->getRequestPath());
     }
 
-    public function testGetRequestOptions_shouldReturnCorrectStructure(): void
+    public function testGetRequestOptionsShouldReturnCorrectStructure(): void
     {
-        $buttons = [
-            [
-                'name' => '测试菜单',
-                'type' => 'view',
-                'url' => 'https://example.com',
+        $menuData = [
+            'button' => [
+                [
+                    'name' => '测试菜单',
+                    'type' => 'view',
+                    'url' => 'https://example.com',
+                ],
             ],
         ];
-        
+
         $matchRule = [
             'tag_id' => '123456',
             'sex' => '1',
@@ -42,34 +50,38 @@ class AddConditionalMenuRequestTest extends TestCase
             'province' => 'Guangdong',
             'city' => 'Shenzhen',
         ];
-        
-        $this->request->setButtons($buttons);
+
+        $this->request->setMenuData($menuData);
         $this->request->setMatchRule($matchRule);
-        
+
         $options = $this->request->getRequestOptions();
+        $this->assertIsArray($options);
         $this->assertArrayHasKey('json', $options);
+        $this->assertIsArray($options['json']);
         $this->assertArrayHasKey('button', $options['json']);
         $this->assertArrayHasKey('matchrule', $options['json']);
-        $this->assertEquals($buttons, $options['json']['button']);
+        $this->assertEquals($menuData['button'], $options['json']['button']);
         $this->assertEquals($matchRule, $options['json']['matchrule']);
     }
 
-    public function testSetGetButtons_shouldWorkCorrectly(): void
+    public function testSetGetMenuDataShouldWorkCorrectly(): void
     {
-        $buttons = [
-            [
-                'name' => '测试菜单',
-                'type' => 'view',
-                'url' => 'https://example.com',
+        $menuData = [
+            'button' => [
+                [
+                    'name' => '测试菜单',
+                    'type' => 'view',
+                    'url' => 'https://example.com',
+                ],
             ],
         ];
-        
-        $this->request->setButtons($buttons);
-        
-        $this->assertEquals($buttons, $this->request->getButtons());
+
+        $this->request->setMenuData($menuData);
+
+        $this->assertEquals($menuData, $this->request->getMenuData());
     }
 
-    public function testSetGetMatchRule_shouldWorkCorrectly(): void
+    public function testSetGetMatchRuleShouldWorkCorrectly(): void
     {
         $matchRule = [
             'tag_id' => '123456',
@@ -78,15 +90,15 @@ class AddConditionalMenuRequestTest extends TestCase
             'province' => 'Guangdong',
             'city' => 'Shenzhen',
         ];
-        
+
         $this->request->setMatchRule($matchRule);
-        
+
         $this->assertEquals($matchRule, $this->request->getMatchRule());
     }
 
-    public function testAccount_shouldBeSettable(): void
+    public function testAccountShouldBeSettable(): void
     {
         $this->request->setAccount($this->account);
         $this->assertSame($this->account, $this->request->getAccount());
     }
-} 
+}

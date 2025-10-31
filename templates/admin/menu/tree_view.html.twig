@@ -1,0 +1,148 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block body_class 'ea-crud-form wechat-menu-tree' %}
+
+{% block content_title %}
+    <span class="fa fa-sitemap"></span>
+    菜单树形结构
+{% endblock %}
+
+{% block main %}
+    <div class="menu-tree-container">
+        {% for account in accounts %}
+            <div class="account-menu-section">
+                <h3>
+                    <span class="fa fa-user"></span>
+                    {{ account.name }}
+                </h3>
+                
+                {% if account.menuButtons is empty %}
+                    <div class="no-menus">
+                        <span class="text-muted">暂无菜单</span>
+                    </div>
+                {% else %}
+                    <div class="menu-tree">
+                        {% for menuButton in account.menuButtons %}
+                            {% if menuButton.parent is null %}
+                                <div class="menu-item level-1" data-menu-id="{{ menuButton.id }}">
+                                    <div class="menu-header">
+                                        <span class="menu-icon fa fa-folder"></span>
+                                        <span class="menu-name">{{ menuButton.name }}</span>
+                                        <span class="menu-type badge badge-{{ menuButton.type.value }}">{{ menuButton.type.value }}</span>
+                                        <span class="menu-position">位置: {{ menuButton.position }}</span>
+                                        {% if not menuButton.enabled %}
+                                            <span class="badge badge-warning">禁用</span>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    {% if menuButton.children is not empty %}
+                                        <div class="menu-children">
+                                            {% for child in menuButton.children %}
+                                                <div class="menu-item level-2" data-menu-id="{{ child.id }}">
+                                                    <div class="menu-header">
+                                                        <span class="menu-icon fa fa-file"></span>
+                                                        <span class="menu-name">{{ child.name }}</span>
+                                                        <span class="menu-type badge badge-{{ child.type.value }}">{{ child.type.value }}</span>
+                                                        <span class="menu-position">位置: {{ child.position }}</span>
+                                                        {% if not child.enabled %}
+                                                            <span class="badge badge-warning">禁用</span>
+                                                        {% endif %}
+                                                        
+                                                        {% if child.type.value == 'click' and child.clickKey %}
+                                                            <span class="menu-value">KEY: {{ child.clickKey }}</span>
+                                                        {% elseif child.type.value == 'view' and child.url %}
+                                                            <span class="menu-value">URL: {{ child.url }}</span>
+                                                        {% elseif child.type.value == 'miniprogram' and child.appId %}
+                                                            <span class="menu-value">AppID: {{ child.appId }}</span>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block body_javascript %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/wechatofficialaccountmenu/admin/menu-tree-editor.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof MenuTreeEditor !== 'undefined') {
+                MenuTreeEditor.init();
+            }
+        });
+    </script>
+{% endblock %}
+
+{% block head_stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/wechatofficialaccountmenu/admin/menu-tree-editor.css') }}">
+    <style>
+        .menu-tree-container {
+            padding: 20px;
+        }
+        
+        .account-menu-section {
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        
+        .menu-item {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        
+        .menu-item.level-1 {
+            background-color: #f8f9fa;
+            border-left: 4px solid #007bff;
+        }
+        
+        .menu-item.level-2 {
+            background-color: #fff;
+            border-left: 4px solid #28a745;
+            margin-left: 20px;
+        }
+        
+        .menu-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .menu-name {
+            font-weight: bold;
+        }
+        
+        .menu-type {
+            font-size: 0.8em;
+        }
+        
+        .menu-position, .menu-value {
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .no-menus {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+        
+        .badge-click { background-color: #007bff; }
+        .badge-view { background-color: #28a745; }
+        .badge-miniprogram { background-color: #17a2b8; }
+        .badge-media_id { background-color: #ffc107; }
+        .badge-view_limited { background-color: #6c757d; }
+    </style>
+{% endblock %}

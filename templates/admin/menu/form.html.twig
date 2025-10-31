@@ -1,0 +1,75 @@
+{% extends '@EasyAdmin/crud/form_theme.html.twig' %}
+
+{% block body_class 'ea-crud-form wechat-menu-form' %}
+
+{% block content_title %}
+    {% if ea.crud.currentAction == 'new' %}
+        <span class="fa fa-plus"></span>
+        创建菜单按钮
+    {% else %}
+        <span class="fa fa-edit"></span>
+        编辑菜单按钮
+    {% endif %}
+{% endblock %}
+
+{% block form_widget %}
+    <div class="form-widget">
+        {{ parent() }}
+    </div>
+{% endblock %}
+
+{% block field_row %}
+    {% if field.vars.name == 'type' %}
+        <div class="form-group field-type">
+            {{ form_label(field) }}
+            {{ form_widget(field) }}
+            {{ form_errors(field) }}
+            {% if field.vars.help %}
+                <small class="form-text text-muted">{{ field.vars.help|trans }}</small>
+            {% endif %}
+        </div>
+    {% elseif field.vars.name in ['clickKey', 'url', 'appId', 'pagePath'] %}
+        <div class="form-group conditional-field" data-show-when-type="{{ field.vars.attr['data-show-when-type'] ?? '' }}">
+            {{ form_label(field) }}
+            {{ form_widget(field) }}
+            {{ form_errors(field) }}
+            {% if field.vars.help %}
+                <small class="form-text text-muted">{{ field.vars.help|trans }}</small>
+            {% endif %}
+        </div>
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block body_javascript %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/wechatofficialaccountmenu/admin/menu-editor.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 根据菜单类型显示/隐藏字段
+            const typeField = document.querySelector('select[name*="[type]"]');
+            if (typeField) {
+                function toggleFields() {
+                    const selectedType = typeField.value;
+                    document.querySelectorAll('.conditional-field').forEach(function(field) {
+                        const showWhenType = field.getAttribute('data-show-when-type');
+                        if (showWhenType === selectedType) {
+                            field.style.display = 'block';
+                        } else {
+                            field.style.display = 'none';
+                        }
+                    });
+                }
+                
+                typeField.addEventListener('change', toggleFields);
+                toggleFields(); // 初始化
+            }
+        });
+    </script>
+{% endblock %}
+
+{% block head_stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/wechatofficialaccountmenu/admin/menu-editor.css') }}">
+{% endblock %}

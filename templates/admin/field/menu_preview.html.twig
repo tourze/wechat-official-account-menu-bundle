@@ -1,0 +1,323 @@
+{# templates/admin/field/menu_preview.html.twig #}
+{% trans_default_domain 'WechatOfficialAccountMenu' %}
+
+<div class="menu-preview-field-wrapper"
+     data-field="{{ field.property }}"
+     data-interactive="{{ field.customOption('interactive')|default(false) ? 'true' : 'false' }}"
+     data-scale="{{ field.customOption('scale')|default(1.0) }}"
+     data-highlight="{{ field.customOption('highlightMenuId')|default('') }}">
+    
+    {% if field.customOption('showMobileFrame') %}
+    <div class="mobile-preview-frame">
+        <div class="mobile-header">
+            <span class="mobile-time">9:41</span>
+            <span class="mobile-title">{{ field.customOption('accountName')|default('公众号') }}</span>
+            <span class="mobile-battery">
+                <i class="fa fa-battery-three-quarters"></i>
+            </span>
+        </div>
+    {% endif %}
+    
+    <div class="wechat-menu-preview">
+        <div class="preview-content">
+            <div class="preview-chat-area">
+                <div class="preview-message">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Crect width='40' height='40' fill='%23ddd'/%3E%3C/svg%3E" class="avatar">
+                    <div class="message-bubble">
+                        点击下方菜单查看效果
+                    </div>
+                </div>
+            </div>
+            
+            <div class="preview-menu-bar">
+                <div class="menu-items">
+                    {% set menuData = field.customOption('menuData')|default([]) %}
+                    {% for menu in menuData|slice(0, 3) %}
+                        <div class="menu-item {% if menu.sub_button|default([]) %}has-sub{% endif %}"
+                             data-menu-id="{{ menu.id|default('') }}">
+                            <span class="menu-name">{{ menu.name }}</span>
+                            
+                            {% if menu.sub_button|default([]) %}
+                            <div class="sub-menu">
+                                {% for subMenu in menu.sub_button|slice(0, 5) %}
+                                <div class="sub-menu-item" data-menu-id="{{ subMenu.id|default('') }}">
+                                    <span class="sub-menu-name">{{ subMenu.name }}</span>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    
+                    {# 填充空白菜单位 #}
+                    {% for i in menuData|length..2 %}
+                    <div class="menu-item empty">
+                        <span class="menu-name">+</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% if field.customOption('showMobileFrame') %}
+    </div>
+    {% endif %}
+    
+    {% if field.customOption('showMenuInfo') %}
+    <div class="menu-info-panel" style="display: none;">
+        <h6>菜单信息</h6>
+        <dl>
+            <dt>菜单名称：</dt>
+            <dd class="info-name">-</dd>
+            <dt>菜单类型：</dt>
+            <dd class="info-type">-</dd>
+            <dt>响应内容：</dt>
+            <dd class="info-content">-</dd>
+        </dl>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+.menu-preview-field-wrapper {
+    position: relative;
+}
+
+.mobile-preview-frame {
+    width: 375px;
+    margin: 0 auto;
+    border: 10px solid #333;
+    border-radius: 30px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
+
+.mobile-header {
+    height: 44px;
+    background: #f7f7f7;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+    font-size: 14px;
+}
+
+.wechat-menu-preview {
+    width: 100%;
+    background: #f5f5f5;
+    user-select: none;
+}
+
+.preview-content {
+    position: relative;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+}
+
+.preview-chat-area {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.preview-message {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.preview-message .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+.message-bubble {
+    background: white;
+    padding: 10px 15px;
+    border-radius: 4px;
+    max-width: 70%;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.preview-menu-bar {
+    background: #fcfcfc;
+    border-top: 1px solid #e7e7e7;
+    height: 50px;
+}
+
+.menu-items {
+    display: flex;
+    height: 100%;
+}
+
+.menu-item {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid #e7e7e7;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.2s;
+}
+
+.menu-item:last-child {
+    border-right: none;
+}
+
+.menu-item:hover {
+    background-color: #f5f5f5;
+}
+
+.menu-item.active {
+    background-color: #f0f0f0;
+}
+
+.menu-item.empty {
+    color: #999;
+    pointer-events: none;
+}
+
+.menu-name {
+    font-size: 14px;
+    color: #333;
+}
+
+.sub-menu {
+    position: absolute;
+    bottom: 100%;
+    left: -1px;
+    right: -1px;
+    background: #fcfcfc;
+    border: 1px solid #e7e7e7;
+    border-bottom: none;
+    display: none;
+}
+
+.menu-item.has-sub:hover .sub-menu,
+.menu-item.has-sub.active .sub-menu {
+    display: block;
+}
+
+.sub-menu-item {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e7e7e7;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.sub-menu-item:hover {
+    background-color: #f5f5f5;
+}
+
+.menu-info-panel {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 4px;
+}
+
+.menu-info-panel h6 {
+    margin-bottom: 10px;
+}
+
+.menu-info-panel dl {
+    margin: 0;
+}
+
+.menu-info-panel dt {
+    float: left;
+    width: 80px;
+    font-weight: normal;
+    color: #666;
+}
+
+.menu-info-panel dd {
+    margin-left: 80px;
+    margin-bottom: 5px;
+}
+
+[data-highlight] .menu-item[data-menu-id],
+[data-highlight] .sub-menu-item[data-menu-id] {
+    position: relative;
+}
+
+[data-highlight] .menu-item[data-menu-id].highlighted::after,
+[data-highlight] .sub-menu-item[data-menu-id].highlighted::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    bottom: 2px;
+    left: 2px;
+    border: 2px solid #409eff;
+    border-radius: 4px;
+    pointer-events: none;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const wrapper = document.querySelector('.menu-preview-field-wrapper');
+    if (!wrapper) return;
+    
+    const interactive = wrapper.dataset.interactive === 'true';
+    const highlightId = wrapper.dataset.highlight;
+    const infoPanel = wrapper.querySelector('.menu-info-panel');
+    
+    // 高亮指定菜单
+    if (highlightId) {
+        const highlightEl = wrapper.querySelector(`[data-menu-id="${highlightId}"]`);
+        if (highlightEl) {
+            highlightEl.classList.add('highlighted');
+        }
+    }
+    
+    // 交互模式
+    if (interactive) {
+        const menuItems = wrapper.querySelectorAll('.menu-item:not(.empty), .sub-menu-item');
+        
+        menuItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                // 移除其他激活状态
+                wrapper.querySelectorAll('.active').forEach(el => {
+                    el.classList.remove('active');
+                });
+                
+                // 激活当前菜单
+                this.classList.add('active');
+                
+                // 如果是子菜单，也激活父菜单
+                const parentMenu = this.closest('.menu-item');
+                if (parentMenu && this.classList.contains('sub-menu-item')) {
+                    parentMenu.classList.add('active');
+                }
+                
+                // 显示菜单信息
+                if (infoPanel) {
+                    const menuId = this.dataset.menuId;
+                    // TODO: 从数据中获取菜单详情
+                    infoPanel.style.display = 'block';
+                }
+            });
+        });
+        
+        // 点击其他地方关闭菜单
+        document.addEventListener('click', function() {
+            wrapper.querySelectorAll('.active').forEach(el => {
+                el.classList.remove('active');
+            });
+            if (infoPanel) {
+                infoPanel.style.display = 'none';
+            }
+        });
+    }
+});
+</script>

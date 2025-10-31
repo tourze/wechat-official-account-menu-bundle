@@ -1,0 +1,189 @@
+{# templates/admin/field/menu_tree.html.twig #}
+{% trans_default_domain 'WechatOfficialAccountMenu' %}
+
+<div class="menu-tree-field-wrapper" 
+     data-field="{{ field.property }}"
+     data-account-id="{{ field.customOption('accountId') }}"
+     data-version-id="{{ field.customOption('versionId') }}"
+     data-drag-drop="{{ field.customOption('dragAndDrop')|default(true) ? 'true' : 'false' }}"
+     data-max-root="{{ field.customOption('maxRootMenus')|default(3) }}"
+     data-max-sub="{{ field.customOption('maxSubMenus')|default(5) }}"
+     data-readonly="{{ field.customOption('readOnly')|default(false) ? 'true' : 'false' }}"
+     data-endpoints="{{ field.customOption('apiEndpoints')|json_encode }}">
+    
+    <div class="menu-tree-header">
+        <h5>{{ field.label|trans }}</h5>
+        <div class="menu-tree-actions">
+            {% if not field.customOption('readOnly') %}
+                <button type="button" class="btn btn-sm btn-primary add-root-menu">
+                    <i class="fa fa-plus"></i> 添加一级菜单
+                </button>
+                <button type="button" class="btn btn-sm btn-secondary expand-all">
+                    <i class="fa fa-expand"></i> 展开全部
+                </button>
+                <button type="button" class="btn btn-sm btn-secondary collapse-all">
+                    <i class="fa fa-compress"></i> 收起全部
+                </button>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="menu-tree-container">
+        <div class="menu-tree-loading">
+            <i class="fa fa-spinner fa-spin"></i> 加载中...
+        </div>
+        
+        <div class="menu-tree-content" style="display: none;">
+            <ul class="menu-tree-root sortable-list"></ul>
+        </div>
+        
+        <div class="menu-tree-empty" style="display: none;">
+            <p class="text-muted text-center">
+                <i class="fa fa-sitemap fa-3x"></i><br>
+                暂无菜单，点击上方"添加一级菜单"开始创建
+            </p>
+        </div>
+    </div>
+    
+    {% if field.customOption('showPreview') %}
+    <div class="menu-tree-preview">
+        <h6>预览效果</h6>
+        <div class="menu-preview-mini"></div>
+    </div>
+    {% endif %}
+    
+    {# 隐藏字段存储JSON数据 #}
+    {{ form_widget(form) }}
+</div>
+
+{# 菜单项模板 #}
+<script type="text/template" id="menu-item-template">
+    <li class="menu-item" data-menu-id="{{id}}" data-parent-id="{{parentId}}">
+        <div class="menu-item-content">
+            <span class="menu-item-handle">
+                <i class="fa fa-grip-vertical"></i>
+            </span>
+            <span class="menu-item-icon">
+                <i class="fa {{#if hasChildren}}fa-folder{{else}}fa-file{{/if}}"></i>
+            </span>
+            <span class="menu-item-name">{{name}}</span>
+            <span class="menu-item-type badge badge-secondary">{{typeLabel}}</span>
+            <span class="menu-item-status">
+                {{#if enabled}}
+                    <i class="fa fa-check-circle text-success" title="已启用"></i>
+                {{else}}
+                    <i class="fa fa-times-circle text-danger" title="已禁用"></i>
+                {{/if}}
+            </span>
+            <span class="menu-item-actions">
+                {{#unless readonly}}
+                    {{#if canAddSub}}
+                    <button type="button" class="btn btn-xs btn-success add-sub-menu" title="添加子菜单">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                    {{/if}}
+                    <button type="button" class="btn btn-xs btn-primary edit-menu" title="编辑">
+                        <i class="fa fa-edit"></i>
+                    </button>
+                    <button type="button" class="btn btn-xs btn-danger delete-menu" title="删除">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                {{/unless}}
+                <button type="button" class="btn btn-xs btn-info toggle-children" title="展开/收起">
+                    <i class="fa fa-chevron-down"></i>
+                </button>
+            </span>
+        </div>
+        {{#if hasChildren}}
+        <ul class="menu-item-children sortable-list"></ul>
+        {{/if}}
+    </li>
+</script>
+
+{# 菜单编辑弹窗模板 #}
+<div class="modal fade" id="menuEditModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">编辑菜单</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="menuEditForm">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="parentId">
+                    
+                    <div class="form-group">
+                        <label>菜单名称 <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="name" required maxlength="60">
+                        <small class="form-text text-muted">一级菜单最多4个汉字，二级菜单最多8个汉字</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>菜单类型 <span class="text-danger">*</span></label>
+                        <select class="form-control" name="type" required>
+                            <option value="">请选择</option>
+                            <option value="click">点击推事件</option>
+                            <option value="view">跳转URL</option>
+                            <option value="miniprogram">小程序</option>
+                            <option value="scancode_push">扫码推事件</option>
+                            <option value="scancode_waitmsg">扫码推事件且弹出"消息接收中"</option>
+                            <option value="pic_sysphoto">弹出系统拍照发图</option>
+                            <option value="pic_photo_or_album">弹出拍照或者相册发图</option>
+                            <option value="pic_weixin">弹出微信相册发图器</option>
+                            <option value="location_select">弹出地理位置选择器</option>
+                            <option value="media_id">下发消息（除文本消息）</option>
+                            <option value="view_limited">跳转图文消息URL</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group menu-type-field" data-types="click,scancode_push,scancode_waitmsg,pic_sysphoto,pic_photo_or_album,pic_weixin,location_select">
+                        <label>菜单KEY <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="clickKey" maxlength="128">
+                        <small class="form-text text-muted">用于消息接口推送，不超过128字节</small>
+                    </div>
+                    
+                    <div class="form-group menu-type-field" data-types="view">
+                        <label>跳转URL <span class="text-danger">*</span></label>
+                        <input type="url" class="form-control" name="url" maxlength="1024">
+                        <small class="form-text text-muted">用户点击菜单可打开链接，不超过1024字节</small>
+                    </div>
+                    
+                    <div class="form-group menu-type-field" data-types="miniprogram">
+                        <label>小程序AppID <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="appId" maxlength="120">
+                    </div>
+                    
+                    <div class="form-group menu-type-field" data-types="miniprogram">
+                        <label>小程序页面路径 <span class="text-danger">*</span></label>
+                        <textarea class="form-control" name="pagePath" rows="2"></textarea>
+                    </div>
+                    
+                    <div class="form-group menu-type-field" data-types="media_id,view_limited">
+                        <label>媒体ID <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="mediaId">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>排序位置</label>
+                        <input type="number" class="form-control" name="position" value="0" min="0">
+                        <small class="form-text text-muted">数字越小越靠前</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="menuEnabled" name="enabled" checked>
+                            <label class="custom-control-label" for="menuEnabled">启用此菜单</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="saveMenuBtn">保存</button>
+            </div>
+        </div>
+    </div>
+</div>

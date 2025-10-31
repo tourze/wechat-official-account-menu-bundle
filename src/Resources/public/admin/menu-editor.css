@@ -1,0 +1,187 @@
+/**
+ * 微信公众号菜单管理样式
+ */
+
+/* 菜单列表页面 */
+.menu-list-tree-indicator {
+    color: #6c757d;
+    margin-right: 5px;
+}
+
+/* 菜单状态标识 */
+.menu-sync-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.875rem;
+}
+
+.menu-sync-status.synced {
+    color: #28a745;
+}
+
+.menu-sync-status.not-synced {
+    color: #dc3545;
+}
+
+.menu-sync-status.unknown {
+    color: #6c757d;
+}
+
+/* 版本状态徽章 */
+.badge.badge-draft {
+    background-color: #6c757d;
+}
+
+.badge.badge-published {
+    background-color: #28a745;
+}
+
+.badge.badge-archived {
+    background-color: #343a40;
+}
+
+/* 操作按钮组 */
+.action-buttons-group {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+/* 表单优化 */
+.menu-form-section {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+.menu-form-section h5 {
+    margin-bottom: 15px;
+    color: #495057;
+}
+
+/* 菜单类型选择 */
+.menu-type-selector {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.menu-type-option {
+    padding: 15px;
+    border: 2px solid #dee2e6;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.menu-type-option:hover {
+    border-color: #007bff;
+    background: #f0f8ff;
+}
+
+.menu-type-option.selected {
+    border-color: #007bff;
+    background: #e7f3ff;
+}
+
+.menu-type-option .icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #6c757d;
+}
+
+.menu-type-option.selected .icon {
+    color: #007bff;
+}
+
+/* 条件字段显示 */
+[data-show-when-type] {
+    transition: opacity 0.3s ease;
+}
+
+/* 导入导出界面 */
+.import-export-section {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+.file-upload-area {
+    border: 2px dashed #dee2e6;
+    border-radius: 4px;
+    padding: 40px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.file-upload-area:hover {
+    border-color: #007bff;
+    background: #f0f8ff;
+}
+
+.file-upload-area.drag-over {
+    border-color: #28a745;
+    background: #d4edda;
+}
+
+.file-upload-area .upload-icon {
+    font-size: 3rem;
+    color: #6c757d;
+    margin-bottom: 15px;
+}
+
+/* 版本对比界面 */
+.version-compare-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.version-panel {
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.version-panel-header {
+    background: #f8f9fa;
+    padding: 15px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.version-panel-body {
+    padding: 15px;
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+/* 差异高亮 */
+.diff-added {
+    background: #d4edda;
+    color: #155724;
+}
+
+.diff-removed {
+    background: #f8d7da;
+    color: #721c24;
+    text-decoration: line-through;
+}
+
+.diff-modified {
+    background: #fff3cd;
+    color: #856404;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .version-compare-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .menu-type-selector {
+        grid-template-columns: 1fr;
+    }
+}

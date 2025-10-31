@@ -1,0 +1,58 @@
+{% extends '@EasyAdmin/crud/index.html.twig' %}
+
+{% block body_class 'ea-crud-index wechat-menu-index' %}
+
+{% block content_title %}
+    <span class="fa fa-list"></span>
+    微信公众号菜单管理
+{% endblock %}
+
+{% block global_actions %}
+    <div class="global-actions">
+        {% for action in global_actions %}
+            {{ include(action.templatePath, {action: action}, with_context = false) }}
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block table_body %}
+    {% for entity in entities %}
+        <tr data-id="{{ entity.primaryKeyValue }}">
+            {% for field in fields %}
+                <td class="{{ field.cssClass }}" dir="{{ ea.i18n.textDirection }}">
+                    {{ include(field.templatePath, {field: field, entity: entity}, with_context = false) }}
+                </td>
+            {% endfor %}
+
+            <td class="actions">
+                {% for action in entity.actions %}
+                    {{ include(action.templatePath, {action: action, entity: entity, isIncludedInDropdown: action.isDisplayedAsDropdownItem}, with_context = false) }}
+                {% endfor %}
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td class="no-results" colspan="{{ fields|length + 1 }}">
+                {{ 'list.no_results'|trans(domain = 'EasyAdminBundle') }}
+            </td>
+        </tr>
+    {% endfor %}
+{% endblock %}
+
+{% block body_javascript %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/wechatofficialaccountmenu/admin/menu-editor.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化菜单树视图
+            if (typeof MenuEditor !== 'undefined') {
+                MenuEditor.init();
+            }
+        });
+    </script>
+{% endblock %}
+
+{% block head_stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/wechatofficialaccountmenu/admin/menu-editor.css') }}">
+{% endblock %}

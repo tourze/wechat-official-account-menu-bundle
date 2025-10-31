@@ -4,5 +4,29 @@ services:
     autowire: true      # Automatically injects dependencies in your services.
     autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
+  # 禁用 EasyAdmin 的认证功能，避免路由生成问题
+  WechatOfficialAccountMenuBundle\Controller\Admin\DashboardController:
+    calls:
+      - method: setContainer
+        arguments: [ '@service_container' ]
+
   WechatOfficialAccountMenuBundle\Repository\:
     resource: '../../Repository/'
+  WechatOfficialAccountMenuBundle\Service\:
+    resource: '../../Service/'
+  WechatOfficialAccountMenuBundle\Controller\:
+    resource: '../../Controller/'
+    tags: ['controller.service_arguments']
+  WechatOfficialAccountMenuBundle\Validator\:
+    resource: '../../Validator/'
+  WechatOfficialAccountMenuBundle\DTO\:
+    resource: '../../DTO/'
+  WechatOfficialAccountMenuBundle\Request\:
+    resource: '../../Request/'
+  WechatOfficialAccountMenuBundle\Field\:
+    resource: '../../Field/'
+
+  # AttributeControllerLoader for API controllers
+  WechatOfficialAccountMenuBundle\Controller\Api\:
+    resource: '../../Controller/Api/'
+    tags: ['controller.service_arguments']
