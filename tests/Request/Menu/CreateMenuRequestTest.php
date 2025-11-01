@@ -2,9 +2,8 @@
 
 namespace WechatOfficialAccountMenuBundle\Tests\Request\Menu;
 
-use HttpClientBundle\Tests\Request\RequestTestCase;
+use HttpClientBundle\Test\RequestTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use WechatOfficialAccountBundle\Request\WithAccountRequest;
 use WechatOfficialAccountMenuBundle\Request\Menu\CreateMenuRequest;
 
