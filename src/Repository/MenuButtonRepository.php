@@ -118,19 +118,16 @@ class MenuButtonRepository extends ServiceEntityRepository
      */
     public function findAccountsWithMenus(): array
     {
-        // 由于需要查询不同的实体（Account），必须使用EntityManager的QueryBuilder
-        $qb = $this->getEntityManager()->createQueryBuilder();
-
-        $result = $qb->select('DISTINCT a')
-            ->from(Account::class, 'a')
-            ->innerJoin(MenuButton::class, 'm', 'WITH', 'm.account = a')
+        // 使用Repository的QueryBuilder查询MenuButton，然后提取唯一的Account
+        $menuButtons = $this->createQueryBuilder('m')
+            ->select('DISTINCT m.account')
             ->getQuery()
             ->getResult()
         ;
-        assert(is_array($result));
+        assert(is_array($menuButtons));
 
         /** @var list<Account> */
-        return $result;
+        return $menuButtons;
     }
 
     public function save(MenuButton $entity, bool $flush = true): void

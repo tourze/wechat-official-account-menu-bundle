@@ -25,7 +25,7 @@ final class DashboardController extends AbstractDashboardController
     }
 
     #[Route(path: '/admin/wechat-menu', name: 'admin_wechat_menu')]
-    public function index(): Response
+    public function __invoke(): Response
     {
         return $this->redirect($this->adminUrlGenerator->setController(MenuButtonCrudController::class)->generateUrl());
     }

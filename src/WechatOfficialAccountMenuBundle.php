@@ -3,7 +3,9 @@
 namespace WechatOfficialAccountMenuBundle;
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
+use EasyCorp\Bundle\EasyAdminBundle\EasyAdminBundle;
 use Symfony\Bundle\SecurityBundle\SecurityBundle;
+use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Tourze\BundleDependency\BundleDependencyInterface;
@@ -19,7 +21,9 @@ class WechatOfficialAccountMenuBundle extends Bundle implements BundleDependency
     {
         return [
             DoctrineBundle::class => ['all' => true],
+            EasyAdminBundle::class => ['all' => true],
             SecurityBundle::class => ['all' => true],
+            TwigBundle::class => ['all' => true],
             WechatOfficialAccountBundle::class => ['all' => true],
             RoutingAutoLoaderBundle::class => ['all' => true],
         ];
@@ -28,6 +32,16 @@ class WechatOfficialAccountMenuBundle extends Bundle implements BundleDependency
     public function build(ContainerBuilder $container): void
     {
         parent::build($container);
+
+        // 注册Twig模板路径
+        $templatePath = __DIR__ . '/../templates';
+        if (is_dir($templatePath)) {
+            $container->prependExtensionConfig('twig', [
+                'paths' => [
+                    $templatePath => 'WechatOfficialAccountMenu',
+                ],
+            ]);
+        }
 
         // 在测试环境下加载Controller服务配置
         if ('test' === $container->getParameter('kernel.environment')) {

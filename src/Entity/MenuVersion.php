@@ -199,6 +199,14 @@ class MenuVersion implements \Stringable
     }
 
     /**
+     * 获取菜单按钮数量.
+     */
+    public function getButtonsCount(): int
+    {
+        return $this->buttons->count();
+    }
+
+    /**
      * 是否为草稿状态.
      */
     public function isDraft(): bool
