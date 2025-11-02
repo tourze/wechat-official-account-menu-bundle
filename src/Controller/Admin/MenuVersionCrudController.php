@@ -215,14 +215,6 @@ final class MenuVersionCrudController extends AbstractCrudController
             ->add(Crud::PAGE_DETAIL, $editMenus)
             ->add(Crud::PAGE_DETAIL, $publishVersion)
             ->add(Crud::PAGE_DETAIL, $cloneVersion)
-            ->update(Crud::PAGE_INDEX, Action::NEW, function (Action $action) {
-                return $action->setIcon('fa fa-plus')->setLabel('新建版本');
-            })
-            ->reorder(Crud::PAGE_INDEX, [
-                'createFromCurrent', 'compare', Action::NEW,
-                'editMenus', 'publishVersion', 'cloneVersion',
-                'archiveVersion', 'restoreVersion',
-            ])
         ;
     }
 

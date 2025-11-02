@@ -240,23 +240,6 @@ final class MenuButtonCrudController extends AbstractCrudController
             ->add(Crud::PAGE_INDEX, $syncToWechat)
             ->add(Crud::PAGE_INDEX, $treeView)
             ->add(Crud::PAGE_INDEX, $importMenu)
-            ->add(Crud::PAGE_INDEX, Action::DETAIL)
-            ->update(Crud::PAGE_INDEX, Action::NEW, function (Action $action) {
-                return $action->setIcon('fa fa-plus')->setLabel('新建菜单');
-            })
-            ->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) {
-                return $action->setIcon('fa fa-edit')->setLabel('编辑');
-            })
-            ->update(Crud::PAGE_INDEX, Action::DELETE, function (Action $action) {
-                return $action->setIcon('fa fa-trash')->setLabel('删除');
-            })
-            ->update(Crud::PAGE_INDEX, Action::DETAIL, function (Action $action) {
-                return $action->setIcon('fa fa-eye')->setLabel('详情');
-            })
-            ->reorder(Crud::PAGE_INDEX, [
-                'treeView', 'importMenu', 'syncToWechat',
-                Action::NEW, Action::EDIT, Action::DETAIL, Action::DELETE,
-            ])
         ;
     }
 

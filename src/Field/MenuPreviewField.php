@@ -27,7 +27,6 @@ final class MenuPreviewField implements FieldInterface
 
     /**
      * @param array<string, mixed> $menuData
-     * @phpstan-ignore symplify.noReturnSetterMethod
      */
     public function setMenuData(array $menuData): self
     {
@@ -36,7 +35,6 @@ final class MenuPreviewField implements FieldInterface
         return $this;
     }
 
-    /** @phpstan-ignore symplify.noReturnSetterMethod */
     public function setAccountName(string $accountName): self
     {
         $this->setCustomOption('accountName', $accountName);
@@ -44,7 +42,6 @@ final class MenuPreviewField implements FieldInterface
         return $this;
     }
 
-    /** @phpstan-ignore symplify.noReturnSetterMethod */
     public function setShowMobileFrame(bool $show = true): self
     {
         $this->setCustomOption('showMobileFrame', $show);
@@ -52,7 +49,6 @@ final class MenuPreviewField implements FieldInterface
         return $this;
     }
 
-    /** @phpstan-ignore symplify.noReturnSetterMethod */
     public function setInteractive(bool $interactive = false): self
     {
         $this->setCustomOption('interactive', $interactive);
@@ -60,7 +56,6 @@ final class MenuPreviewField implements FieldInterface
         return $this;
     }
 
-    /** @phpstan-ignore symplify.noReturnSetterMethod */
     public function setScale(float $scale = 1.0): self
     {
         $this->setCustomOption('scale', $scale);
@@ -68,7 +63,6 @@ final class MenuPreviewField implements FieldInterface
         return $this;
     }
 
-    /** @phpstan-ignore symplify.noReturnSetterMethod */
     public function setHighlightMenuId(?string $menuId): self
     {
         $this->setCustomOption('highlightMenuId', $menuId);
@@ -76,7 +70,6 @@ final class MenuPreviewField implements FieldInterface
         return $this;
     }
 
-    /** @phpstan-ignore symplify.noReturnSetterMethod */
     public function setShowMenuInfo(bool $show = true): self
     {
         $this->setCustomOption('showMenuInfo', $show);

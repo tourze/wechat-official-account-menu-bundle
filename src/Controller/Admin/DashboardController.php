@@ -24,9 +24,6 @@ final class DashboardController extends AbstractDashboardController
     ) {
     }
 
-    /**
-     * @phpstan-ignore-next-line symfony.requireInvokableController
-     */
     #[Route(path: '/admin/wechat-menu', name: 'admin_wechat_menu')]
     public function index(): Response
     {

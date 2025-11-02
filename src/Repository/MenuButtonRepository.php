@@ -119,7 +119,6 @@ class MenuButtonRepository extends ServiceEntityRepository
     public function findAccountsWithMenus(): array
     {
         // 由于需要查询不同的实体（Account），必须使用EntityManager的QueryBuilder
-        // @phpstan-ignore-next-line doctrine.requireQueryBuilderOnRepository
         $qb = $this->getEntityManager()->createQueryBuilder();
 
         $result = $qb->select('DISTINCT a')

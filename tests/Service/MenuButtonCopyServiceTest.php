@@ -28,9 +28,7 @@ final class MenuButtonCopyServiceTest extends TestCase
 
     protected function setUp(): void
     {
-        /** @phpstan-ignore-next-line */
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
-        /** @phpstan-ignore-next-line */
         $this->menuButtonRepository = $this->createMock(MenuButtonRepository::class);
         $this->service = new MenuButtonCopyService(
             $this->entityManager,

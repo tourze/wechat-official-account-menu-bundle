@@ -18,9 +18,6 @@ final class TestAdminUrlGenerator implements AdminUrlGeneratorInterface
     ) {
     }
 
-    /**
-     * @phpstan-ignore-next-line symplify.noReturnSetterMethod (装饰器模式需要返回值以支持链式调用)
-     */
     public function setAll(array $params): AdminUrlGeneratorInterface
     {
         $this->inner->setAll($params);
@@ -28,9 +25,6 @@ final class TestAdminUrlGenerator implements AdminUrlGeneratorInterface
         return $this;
     }
 
-    /**
-     * @phpstan-ignore-next-line symplify.noReturnSetterMethod (装饰器模式需要返回值以支持链式调用)
-     */
     public function set(string $name, mixed $value): AdminUrlGeneratorInterface
     {
         $this->inner->set($name, $value);
@@ -38,9 +32,6 @@ final class TestAdminUrlGenerator implements AdminUrlGeneratorInterface
         return $this;
     }
 
-    /**
-     * @phpstan-ignore-next-line symplify.noReturnSetterMethod (装饰器模式需要返回值以支持链式调用)
-     */
     public function setController(string $controllerFqcn): AdminUrlGeneratorInterface
     {
         $this->inner->setController($controllerFqcn);
@@ -48,9 +39,6 @@ final class TestAdminUrlGenerator implements AdminUrlGeneratorInterface
         return $this;
     }
 
-    /**
-     * @phpstan-ignore-next-line symplify.noReturnSetterMethod (装饰器模式需要返回值以支持链式调用)
-     */
     public function setAction(string $action): AdminUrlGeneratorInterface
     {
         $this->inner->setAction($action);
@@ -58,9 +46,6 @@ final class TestAdminUrlGenerator implements AdminUrlGeneratorInterface
         return $this;
     }
 
-    /**
-     * @phpstan-ignore-next-line symplify.noReturnSetterMethod (装饰器模式需要返回值以支持链式调用)
-     */
     public function setEntityId(mixed $entityId): AdminUrlGeneratorInterface
     {
         $this->inner->setEntityId($entityId);
@@ -68,9 +53,6 @@ final class TestAdminUrlGenerator implements AdminUrlGeneratorInterface
         return $this;
     }
 
-    /**
-     * @phpstan-ignore-next-line symplify.noReturnSetterMethod (装饰器模式需要返回值以支持链式调用)
-     */
     public function setDashboard(string $dashboardControllerFqcn): AdminUrlGeneratorInterface
     {
         $this->inner->setDashboard($dashboardControllerFqcn);
@@ -78,9 +60,6 @@ final class TestAdminUrlGenerator implements AdminUrlGeneratorInterface
         return $this;
     }
 
-    /**
-     * @phpstan-ignore-next-line symplify.noReturnSetterMethod (装饰器模式需要返回值以支持链式调用)
-     */
     public function setRoute(string $routeName, array $routeParameters = []): AdminUrlGeneratorInterface
     {
         $this->inner->setRoute($routeName, $routeParameters);
@@ -128,9 +107,6 @@ final class TestAdminUrlGenerator implements AdminUrlGeneratorInterface
         return $this;
     }
 
-    /**
-     * @phpstan-ignore-next-line symplify.noReturnSetterMethod (装饰器模式需要返回值以支持链式调用)
-     */
     public function setReferrer(string $referrer): AdminUrlGeneratorInterface
     {
         $this->inner->setReferrer($referrer);

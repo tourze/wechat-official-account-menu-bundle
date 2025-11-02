@@ -2,13 +2,14 @@
 
 namespace WechatOfficialAccountMenuBundle\Tests\Controller\Admin;
 
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Tourze\PHPUnitSymfonyWebTest\AbstractWebTestCase;
+use Tourze\PHPUnitSymfonyWebTest\AbstractEasyAdminControllerTestCase;
 use WechatOfficialAccountMenuBundle\Controller\Admin\MenuVersionCrudController;
 use WechatOfficialAccountMenuBundle\Entity\MenuVersion;
 
@@ -17,7 +18,7 @@ use WechatOfficialAccountMenuBundle\Entity\MenuVersion;
  */
 #[CoversClass(MenuVersionCrudController::class)]
 #[RunTestsInSeparateProcesses]
-final class MenuVersionCrudControllerIntegrationTest extends AbstractWebTestCase
+final class MenuVersionCrudControllerIntegrationTest extends AbstractEasyAdminControllerTestCase
 {
     public function testGetEntityFqcn(): void
     {
@@ -59,20 +60,57 @@ final class MenuVersionCrudControllerIntegrationTest extends AbstractWebTestCase
         $this->assertTrue(true, 'compareVersions method exists');
     }
 
-    #[DataProvider('provideNotAllowedMethods')]
-    public function testMethodNotAllowed(string $method): void
+    protected function getControllerService(): MenuVersionCrudController
     {
-        $client = self::createAuthenticatedClient();
+        $controller = self::getService(MenuVersionCrudController::class);
+        self::assertInstanceOf(MenuVersionCrudController::class, $controller);
+        return $controller;
+    }
 
-        try {
-            $client->request($method, '/admin/wechat-menu/menu-version');
-            $response = $client->getResponse();
-            $this->assertSame(Response::HTTP_METHOD_NOT_ALLOWED, $response->getStatusCode());
-        } catch (MethodNotAllowedHttpException|NotFoundHttpException $e) {
-            // 对于无效的HTTP方法（如"INVALID"），Symfony会抛出NotFoundHttpException
-            // 对于有效但不被允许的HTTP方法，会抛出MethodNotAllowedHttpException
-            // 由于已经在catch块中声明了异常类型，这里只需要确保异常被捕获即可
-            $this->assertTrue(true, 'Expected exception was caught');
-        }
+    public static function provideIndexPageHeaders(): iterable
+    {
+        yield 'ID' => ['ID'];
+        yield '公众号' => ['公众号'];
+        yield '版本号' => ['版本号'];
+        yield '状态' => ['状态'];
+        yield '发布时间' => ['发布时间'];
+        yield '菜单数量' => ['菜单数量'];
+    }
+
+    public static function provideNewPageFields(): iterable
+    {
+        yield 'account' => ['account'];
+        yield 'version' => ['version'];
+        yield 'description' => ['description'];
+        yield 'status' => ['status'];
+    }
+
+    public static function provideEditPageFields(): iterable
+    {
+        yield 'account' => ['account'];
+        yield 'version' => ['version'];
+        yield 'description' => ['description'];
+        yield 'status' => ['status'];
+    }
+
+    public function testValidationErrors(): void
+    {
+        $client = self::createClient();
+        $crawler = $client->request('GET', $this->generateAdminUrl(Action::NEW));
+        $this->assertResponseIsSuccessful();
+
+        $form = $crawler->filter('form[name="MenuVersion"]')->form();
+
+        // 提交空表单触发必填字段验证
+        $client->submit($form);
+
+        // 验证响应状态码为 422 (Unprocessable Entity)
+        $this->assertResponseStatusCodeSame(422);
+
+        // 验证必填字段的错误信息
+        $responseContent = $client->getResponse()->getContent();
+        $this->assertNotFalse($responseContent);
+        $this->assertStringContainsString('account', $responseContent);
+        $this->assertStringContainsString('version', $responseContent);
     }
 }

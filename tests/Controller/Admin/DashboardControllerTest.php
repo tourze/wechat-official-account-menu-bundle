@@ -45,7 +45,8 @@ final class DashboardControllerTest extends AbstractWebTestCase
     #[DataProvider('provideNotAllowedMethods')]
     public function testMethodNotAllowed(string $method): void
     {
-        $client = self::createAuthenticatedClient();
+        $client = self::createClientWithDatabase();
+        $this->loginAsAdmin($client);
 
         try {
             $client->request($method, '/admin/wechat-menu');
@@ -58,4 +59,5 @@ final class DashboardControllerTest extends AbstractWebTestCase
             $this->assertTrue(true, 'Expected exception was caught');
         }
     }
+
 }

@@ -815,7 +815,7 @@ final class MenuTreeFieldTest extends TestCase
         $this->expectExceptionMessage('must be a scalar value');
 
         $field = MenuTreeField::new('menuTree');
-        // @phpstan-ignore-next-line Intentionally passing wrong type to test exception
+        /** @phpstan-ignore-next-line argument.type */
         $field->setHtmlAttribute('data-test', (object) ['invalid' => 'object']);
     }
 }
