@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Tourze\PHPUnitSymfonyWebTest\AbstractEasyAdminControllerTestCase;
+use WechatOfficialAccountMenuBundle\Controller\Admin\DashboardController;
 use WechatOfficialAccountMenuBundle\Controller\Admin\MenuButtonCrudController;
 use WechatOfficialAccountMenuBundle\Entity\MenuButton;
 
@@ -40,6 +41,14 @@ final class MenuButtonCrudControllerIntegrationTest extends AbstractEasyAdminCon
         $this->assertTrue(true, 'importMenu method exists');
     }
 
+
+    /**
+     * 覆盖基类方法，声明使用正确的Dashboard控制器
+     */
+    protected function getPreferredDashboardControllerFqcn(): string
+    {
+        return DashboardController::class;
+    }
 
     protected function getControllerService(): MenuButtonCrudController
     {

@@ -16,27 +16,35 @@
 {% endblock %}
 
 {% block table_body %}
-    {% for entity in entities %}
-        <tr data-id="{{ entity.primaryKeyValue }}">
-            {% for field in fields %}
-                <td class="{{ field.cssClass }}" dir="{{ ea.i18n.textDirection }}">
-                    {{ include(field.templatePath, {field: field, entity: entity}, with_context = false) }}
-                </td>
-            {% endfor %}
-
-            <td class="actions">
-                {% for action in entity.actions %}
-                    {{ include(action.templatePath, {action: action, entity: entity, isIncludedInDropdown: action.isDisplayedAsDropdownItem}, with_context = false) }}
+    {% if fields is defined and fields is not empty %}
+        {% for entity in entities %}
+            <tr data-id="{{ entity.primaryKeyValue }}">
+                {% for field in fields %}
+                    <td class="{{ field.cssClass }}" dir="{{ ea.i18n.textDirection }}">
+                        {{ include(field.templatePath, {field: field, entity: entity}, with_context = false) }}
+                    </td>
                 {% endfor %}
-            </td>
-        </tr>
+
+                <td class="actions">
+                    {% for action in entity.actions %}
+                        {{ include(action.templatePath, {action: action, entity: entity, isIncludedInDropdown: action.isDisplayedAsDropdownItem}, with_context = false) }}
+                    {% endfor %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td class="no-results" colspan="{{ fields|length + 1 }}">
+                    {{ 'list.no_results'|trans(domain = 'EasyAdminBundle') }}
+                </td>
+            </tr>
+        {% endfor %}
     {% else %}
         <tr>
-            <td class="no-results" colspan="{{ fields|length + 1 }}">
-                {{ 'list.no_results'|trans(domain = 'EasyAdminBundle') }}
+            <td class="no-results" colspan="1">
+                {{ 'list.no_results'|trans(domain = 'EasyAdminBundle') }} (Fields not configured)
             </td>
         </tr>
-    {% endfor %}
+    {% endif %}
 {% endblock %}
 
 {% block body_javascript %}

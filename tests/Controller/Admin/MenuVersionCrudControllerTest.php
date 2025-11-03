@@ -7,6 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Tourze\PHPUnitSymfonyWebTest\AbstractEasyAdminControllerTestCase;
+use WechatOfficialAccountMenuBundle\Controller\Admin\DashboardController;
 use WechatOfficialAccountMenuBundle\Controller\Admin\MenuVersionCrudController;
 use WechatOfficialAccountMenuBundle\Entity\MenuVersion;
 
@@ -55,6 +56,14 @@ final class MenuVersionCrudControllerTest extends AbstractEasyAdminControllerTes
     public function testControllerHasCompareVersionsMethod(): void
     {
         $this->assertTrue(true, 'compareVersions method exists');
+    }
+
+    /**
+     * 覆盖基类方法，声明使用正确的Dashboard控制器
+     */
+    protected function getPreferredDashboardControllerFqcn(): string
+    {
+        return DashboardController::class;
     }
 
     /**

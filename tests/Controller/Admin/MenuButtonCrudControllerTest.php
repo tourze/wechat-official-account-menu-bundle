@@ -40,6 +40,14 @@ final class MenuButtonCrudControllerTest extends AbstractTestCase
     }
 
     /**
+     * 覆盖基类方法，声明使用正确的Dashboard控制器
+     */
+    protected function getPreferredDashboardControllerFqcn(): string
+    {
+        return DashboardController::class;
+    }
+
+    /**
      * @return AbstractCrudController<MenuButton>
      */
     protected function getControllerService(): AbstractCrudController

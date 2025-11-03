@@ -6,6 +6,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Tourze\PHPUnitSymfonyWebTest\AbstractEasyAdminControllerTestCase;
+use WechatOfficialAccountMenuBundle\Controller\Admin\DashboardController;
 use WechatOfficialAccountMenuBundle\Controller\Admin\MenuButtonVersionCrudController;
 use WechatOfficialAccountMenuBundle\Entity\MenuButtonVersion;
 
@@ -19,6 +20,14 @@ final class MenuButtonVersionCrudControllerTest extends AbstractEasyAdminControl
     public function testGetEntityFqcn(): void
     {
         $this->assertSame(MenuButtonVersion::class, MenuButtonVersionCrudController::getEntityFqcn());
+    }
+
+    /**
+     * 覆盖基类方法，声明使用正确的Dashboard控制器
+     */
+    protected function getPreferredDashboardControllerFqcn(): string
+    {
+        return DashboardController::class;
     }
 
     /**
