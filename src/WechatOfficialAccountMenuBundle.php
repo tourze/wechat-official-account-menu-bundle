@@ -11,6 +11,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Tourze\BundleDependency\BundleDependencyInterface;
 use Tourze\RoutingAutoLoaderBundle\RoutingAutoLoaderBundle;
 use WechatOfficialAccountBundle\WechatOfficialAccountBundle;
+use Tourze\EasyAdminMenuBundle\EasyAdminMenuBundle;
 
 class WechatOfficialAccountMenuBundle extends Bundle implements BundleDependencyInterface
 {
@@ -26,6 +27,7 @@ class WechatOfficialAccountMenuBundle extends Bundle implements BundleDependency
             TwigBundle::class => ['all' => true],
             WechatOfficialAccountBundle::class => ['all' => true],
             RoutingAutoLoaderBundle::class => ['all' => true],
+            EasyAdminMenuBundle::class => ['all' => true],
         ];
     }
 
