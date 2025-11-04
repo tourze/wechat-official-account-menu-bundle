@@ -42,7 +42,7 @@ final class CreateMenuVersionController extends AbstractController
         $copyFrom = null;
         if (null !== $copyFromId) {
             $copyFrom = $this->menuVersionRepository->find($copyFromId);
-            if (null === $copyFrom || $copyFrom->getAccount()->getId() !== $accountId) {
+            if (null === $copyFrom || (string) $copyFrom->getAccount()->getId() !== $accountId) {
                 return $this->json([
                     'success' => false,
                     'error' => '源版本不存在',

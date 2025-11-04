@@ -68,7 +68,6 @@ class WechatMenuApiService
         try {
             $result = $this->officialAccountClient->request($request);
             /** @var array<string, mixed> $result */
-            assert(is_array($result));
 
             return $result;
         } catch (\Throwable $e) {
@@ -124,11 +123,6 @@ class WechatMenuApiService
         try {
             $result = $this->officialAccountClient->request($request);
             /** @var array{menuid: string} $result */
-            assert(is_array($result));
-
-            if (!isset($result['menuid'])) {
-                throw new WechatApiException('响应中缺少menuid字段', 0);
-            }
 
             $menuId = $result['menuid'];
 
@@ -194,7 +188,6 @@ class WechatMenuApiService
         try {
             $result = $this->officialAccountClient->request($request);
             /** @var array<string, mixed> $result */
-            assert(is_array($result));
 
             return $result;
         } catch (\Throwable $e) {
@@ -223,7 +216,6 @@ class WechatMenuApiService
         try {
             $result = $this->officialAccountClient->request($request);
             /** @var array<string, mixed> $result */
-            assert(is_array($result));
 
             return $result;
         } catch (\Throwable $e) {

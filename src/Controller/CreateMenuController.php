@@ -93,7 +93,7 @@ final class CreateMenuController extends AbstractController
         $parent = null;
         if (null !== $dto->parentId) {
             $parent = $this->menuButtonRepository->find($dto->parentId);
-            if (null === $parent || $parent->getAccount()->getId() !== $accountId) {
+            if (null === $parent || (string) $parent->getAccount()->getId() !== $accountId) {
                 return $this->json([
                     'success' => false,
                     'error' => '父菜单不存在',

@@ -21,32 +21,32 @@ final class TestAdminUrlGeneratorTest extends TestCase
             /** @var array<string, mixed> */
             private array $params = [];
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setDashboard(string $dashboardControllerFqcn): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setDashboard(string $dashboardControllerFqcn): self
             {
                 $this->params['dashboardControllerFqcn'] = $dashboardControllerFqcn;
 
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setController(string $crudControllerFqcn): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setController(string $crudControllerFqcn): self
             {
                 $this->params['crudControllerFqcn'] = $crudControllerFqcn;
 
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setAction(string $action): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setAction(string $action): self
             {
                 $this->params['action'] = $action;
 
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setRoute(string $routeName, array $routeParameters = []): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setRoute(string $routeName, array $routeParameters = []): self
             {
                 $this->params['routeName'] = $routeName;
                 $this->params['routeParameters'] = $routeParameters;
@@ -54,8 +54,8 @@ final class TestAdminUrlGeneratorTest extends TestCase
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setEntityId(mixed $entityId): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setEntityId(mixed $entityId): self
             {
                 $this->params['entityId'] = $entityId;
 
@@ -67,16 +67,16 @@ final class TestAdminUrlGeneratorTest extends TestCase
                 return $this->params[$paramName] ?? null;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function set(string $paramName, mixed $paramValue): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function set(string $paramName, mixed $paramValue): self
             {
                 $this->params[$paramName] = $paramValue;
 
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setAll(array $routeParameters): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setAll(array $routeParameters): self
             {
                 foreach ($routeParameters as $k => $v) {
                     $this->params[$k] = $v;
@@ -85,24 +85,21 @@ final class TestAdminUrlGeneratorTest extends TestCase
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function unset(string $paramName): self
+              public function unset(string $paramName): self
             {
                 unset($this->params[$paramName]);
 
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function unsetAll(): self
+              public function unsetAll(): self
             {
                 $this->params = [];
 
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function unsetAllExcept(string ...$namesOfParamsToKeep): self
+              public function unsetAllExcept(string ...$namesOfParamsToKeep): self
             {
                 $keep = [];
                 foreach ($namesOfParamsToKeep as $name) {
@@ -115,26 +112,23 @@ final class TestAdminUrlGeneratorTest extends TestCase
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function includeReferrer(): self
+              public function includeReferrer(): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function removeReferrer(): self
+              public function removeReferrer(): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setReferrer(string $referrer): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setReferrer(string $referrer): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function addSignature(bool $addSignature = true): self
+              public function addSignature(bool $addSignature = true): self
             {
                 return $this;
             }
@@ -169,34 +163,34 @@ final class TestAdminUrlGeneratorTest extends TestCase
         $inner = new class implements AdminUrlGeneratorInterface {
             public string $lastAction = '';
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setDashboard(string $dashboardControllerFqcn): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setDashboard(string $dashboardControllerFqcn): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setController(string $crudControllerFqcn): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setController(string $crudControllerFqcn): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setAction(string $action): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setAction(string $action): self
             {
                 $this->lastAction = $action;
 
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setRoute(string $routeName, array $routeParameters = []): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setRoute(string $routeName, array $routeParameters = []): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setEntityId(mixed $entityId): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setEntityId(mixed $entityId): self
             {
                 return $this;
             }
@@ -206,56 +200,50 @@ final class TestAdminUrlGeneratorTest extends TestCase
                 return null;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function set(string $paramName, mixed $paramValue): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function set(string $paramName, mixed $paramValue): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setAll(array $routeParameters): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setAll(array $routeParameters): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function unset(string $paramName): self
+              public function unset(string $paramName): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function unsetAll(): self
+              public function unsetAll(): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function unsetAllExcept(string ...$namesOfParamsToKeep): self
+              public function unsetAllExcept(string ...$namesOfParamsToKeep): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function includeReferrer(): self
+              public function includeReferrer(): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function removeReferrer(): self
+              public function removeReferrer(): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setReferrer(string $referrer): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setReferrer(string $referrer): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function addSignature(bool $addSignature = true): self
+              public function addSignature(bool $addSignature = true): self
             {
                 return $this;
             }
@@ -282,34 +270,34 @@ final class TestAdminUrlGeneratorTest extends TestCase
             /** @var array<string, mixed> */
             private array $p = [];
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setDashboard(string $dashboardControllerFqcn): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setDashboard(string $dashboardControllerFqcn): self
             {
                 $this->p['dashboardControllerFqcn'] = $dashboardControllerFqcn;
 
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setController(string $crudControllerFqcn): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setController(string $crudControllerFqcn): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setAction(string $action): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setAction(string $action): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setRoute(string $routeName, array $routeParameters = []): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setRoute(string $routeName, array $routeParameters = []): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setEntityId(mixed $entityId): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setEntityId(mixed $entityId): self
             {
                 return $this;
             }
@@ -319,16 +307,16 @@ final class TestAdminUrlGeneratorTest extends TestCase
                 return $this->p[$paramName] ?? null;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function set(string $paramName, mixed $paramValue): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function set(string $paramName, mixed $paramValue): self
             {
                 $this->p[$paramName] = $paramValue;
 
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setAll(array $routeParameters): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setAll(array $routeParameters): self
             {
                 foreach ($routeParameters as $k => $v) {
                     $this->p[$k] = $v;
@@ -337,24 +325,21 @@ final class TestAdminUrlGeneratorTest extends TestCase
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function unset(string $paramName): self
+              public function unset(string $paramName): self
             {
                 unset($this->p[$paramName]);
 
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function unsetAll(): self
+              public function unsetAll(): self
             {
                 $this->p = [];
 
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function unsetAllExcept(string ...$namesOfParamsToKeep): self
+              public function unsetAllExcept(string ...$namesOfParamsToKeep): self
             {
                 $keep = [];
                 foreach ($namesOfParamsToKeep as $n) {
@@ -366,26 +351,23 @@ final class TestAdminUrlGeneratorTest extends TestCase
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function includeReferrer(): self
+              public function includeReferrer(): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function removeReferrer(): self
+              public function removeReferrer(): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setReferrer(string $referrer): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setReferrer(string $referrer): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function addSignature(bool $addSignature = true): self
+              public function addSignature(bool $addSignature = true): self
             {
                 return $this;
             }
@@ -419,32 +401,32 @@ final class TestAdminUrlGeneratorTest extends TestCase
             /** @var array<string, mixed> */
             private array $p = [];
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setDashboard(string $dashboardControllerFqcn): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setDashboard(string $dashboardControllerFqcn): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setController(string $crudControllerFqcn): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setController(string $crudControllerFqcn): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setAction(string $action): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setAction(string $action): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setRoute(string $routeName, array $routeParameters = []): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setRoute(string $routeName, array $routeParameters = []): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setEntityId(mixed $entityId): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setEntityId(mixed $entityId): self
             {
                 return $this;
             }
@@ -454,58 +436,52 @@ final class TestAdminUrlGeneratorTest extends TestCase
                 return $this->p[$paramName] ?? null;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function set(string $paramName, mixed $paramValue): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function set(string $paramName, mixed $paramValue): self
             {
                 $this->p[$paramName] = $paramValue;
 
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setAll(array $routeParameters): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setAll(array $routeParameters): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function unset(string $paramName): self
+              public function unset(string $paramName): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function unsetAll(): self
+              public function unsetAll(): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function unsetAllExcept(string ...$namesOfParamsToKeep): self
+              public function unsetAllExcept(string ...$namesOfParamsToKeep): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function includeReferrer(): self
+              public function includeReferrer(): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function removeReferrer(): self
+              public function removeReferrer(): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setReferrer(string $referrer): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setReferrer(string $referrer): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function addSignature(bool $addSignature = true): self
+              public function addSignature(bool $addSignature = true): self
             {
                 return $this;
             }
@@ -531,32 +507,32 @@ final class TestAdminUrlGeneratorTest extends TestCase
             /** @var array<string, mixed> */
             private array $p = [];
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setDashboard(string $dashboardControllerFqcn): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setDashboard(string $dashboardControllerFqcn): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setController(string $crudControllerFqcn): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setController(string $crudControllerFqcn): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setAction(string $action): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setAction(string $action): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setRoute(string $routeName, array $routeParameters = []): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setRoute(string $routeName, array $routeParameters = []): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setEntityId(mixed $entityId): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setEntityId(mixed $entityId): self
             {
                 return $this;
             }
@@ -566,60 +542,54 @@ final class TestAdminUrlGeneratorTest extends TestCase
                 return $this->p[$paramName] ?? null;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function set(string $paramName, mixed $paramValue): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function set(string $paramName, mixed $paramValue): self
             {
                 $this->p[$paramName] = $paramValue;
 
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setAll(array $routeParameters): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setAll(array $routeParameters): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function unset(string $paramName): self
+              public function unset(string $paramName): self
             {
                 unset($this->p[$paramName]);
 
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function unsetAll(): self
+              public function unsetAll(): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function unsetAllExcept(string ...$namesOfParamsToKeep): self
+              public function unsetAllExcept(string ...$namesOfParamsToKeep): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function includeReferrer(): self
+              public function includeReferrer(): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function removeReferrer(): self
+              public function removeReferrer(): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setReferrer(string $referrer): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setReferrer(string $referrer): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function addSignature(bool $addSignature = true): self
+              public function addSignature(bool $addSignature = true): self
             {
                 return $this;
             }
@@ -646,32 +616,32 @@ final class TestAdminUrlGeneratorTest extends TestCase
             /** @var array<string, mixed> */
             private array $p = [];
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setDashboard(string $dashboardControllerFqcn): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setDashboard(string $dashboardControllerFqcn): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setController(string $crudControllerFqcn): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setController(string $crudControllerFqcn): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setAction(string $action): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setAction(string $action): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setRoute(string $routeName, array $routeParameters = []): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setRoute(string $routeName, array $routeParameters = []): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setEntityId(mixed $entityId): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setEntityId(mixed $entityId): self
             {
                 return $this;
             }
@@ -681,60 +651,54 @@ final class TestAdminUrlGeneratorTest extends TestCase
                 return $this->p[$paramName] ?? null;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function set(string $paramName, mixed $paramValue): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function set(string $paramName, mixed $paramValue): self
             {
                 $this->p[$paramName] = $paramValue;
 
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setAll(array $routeParameters): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setAll(array $routeParameters): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function unset(string $paramName): self
+              public function unset(string $paramName): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function unsetAll(): self
+              public function unsetAll(): self
             {
                 $this->p = [];
 
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function unsetAllExcept(string ...$namesOfParamsToKeep): self
+              public function unsetAllExcept(string ...$namesOfParamsToKeep): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function includeReferrer(): self
+              public function includeReferrer(): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function removeReferrer(): self
+              public function removeReferrer(): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setReferrer(string $referrer): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setReferrer(string $referrer): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function addSignature(bool $addSignature = true): self
+              public function addSignature(bool $addSignature = true): self
             {
                 return $this;
             }
@@ -761,32 +725,32 @@ final class TestAdminUrlGeneratorTest extends TestCase
             /** @var array<string, mixed> */
             private array $p = [];
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setDashboard(string $dashboardControllerFqcn): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setDashboard(string $dashboardControllerFqcn): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setController(string $crudControllerFqcn): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setController(string $crudControllerFqcn): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setAction(string $action): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setAction(string $action): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setRoute(string $routeName, array $routeParameters = []): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setRoute(string $routeName, array $routeParameters = []): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setEntityId(mixed $entityId): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setEntityId(mixed $entityId): self
             {
                 return $this;
             }
@@ -796,36 +760,33 @@ final class TestAdminUrlGeneratorTest extends TestCase
                 return $this->p[$paramName] ?? null;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function set(string $paramName, mixed $paramValue): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function set(string $paramName, mixed $paramValue): self
             {
                 $this->p[$paramName] = $paramValue;
 
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setAll(array $routeParameters): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setAll(array $routeParameters): self
             {
                 $this->p = $routeParameters;
 
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function unset(string $paramName): self
+              public function unset(string $paramName): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function unsetAll(): self
+              public function unsetAll(): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function unsetAllExcept(string ...$namesOfParamsToKeep): self
+              public function unsetAllExcept(string ...$namesOfParamsToKeep): self
             {
                 $keep = [];
                 foreach ($namesOfParamsToKeep as $n) {
@@ -837,26 +798,23 @@ final class TestAdminUrlGeneratorTest extends TestCase
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function includeReferrer(): self
+              public function includeReferrer(): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function removeReferrer(): self
+              public function removeReferrer(): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setReferrer(string $referrer): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setReferrer(string $referrer): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function addSignature(bool $addSignature = true): self
+              public function addSignature(bool $addSignature = true): self
             {
                 return $this;
             }
@@ -881,32 +839,32 @@ final class TestAdminUrlGeneratorTest extends TestCase
     public function testIncludeReferrer(): void
     {
         $inner = new class implements AdminUrlGeneratorInterface {
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setDashboard(string $dashboardControllerFqcn): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setDashboard(string $dashboardControllerFqcn): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setController(string $crudControllerFqcn): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setController(string $crudControllerFqcn): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setAction(string $action): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setAction(string $action): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setRoute(string $routeName, array $routeParameters = []): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setRoute(string $routeName, array $routeParameters = []): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setEntityId(mixed $entityId): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setEntityId(mixed $entityId): self
             {
                 return $this;
             }
@@ -916,56 +874,50 @@ final class TestAdminUrlGeneratorTest extends TestCase
                 return null;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function set(string $paramName, mixed $paramValue): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function set(string $paramName, mixed $paramValue): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setAll(array $routeParameters): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setAll(array $routeParameters): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function unset(string $paramName): self
+              public function unset(string $paramName): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function unsetAll(): self
+              public function unsetAll(): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function unsetAllExcept(string ...$namesOfParamsToKeep): self
+              public function unsetAllExcept(string ...$namesOfParamsToKeep): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function includeReferrer(): self
+              public function includeReferrer(): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function removeReferrer(): self
+              public function removeReferrer(): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setReferrer(string $referrer): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setReferrer(string $referrer): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function addSignature(bool $addSignature = true): self
+              public function addSignature(bool $addSignature = true): self
             {
                 return $this;
             }
@@ -989,32 +941,32 @@ final class TestAdminUrlGeneratorTest extends TestCase
     public function testRemoveReferrer(): void
     {
         $inner = new class implements AdminUrlGeneratorInterface {
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setDashboard(string $dashboardControllerFqcn): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setDashboard(string $dashboardControllerFqcn): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setController(string $crudControllerFqcn): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setController(string $crudControllerFqcn): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setAction(string $action): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setAction(string $action): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setRoute(string $routeName, array $routeParameters = []): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setRoute(string $routeName, array $routeParameters = []): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setEntityId(mixed $entityId): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setEntityId(mixed $entityId): self
             {
                 return $this;
             }
@@ -1024,56 +976,50 @@ final class TestAdminUrlGeneratorTest extends TestCase
                 return null;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function set(string $paramName, mixed $paramValue): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function set(string $paramName, mixed $paramValue): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setAll(array $routeParameters): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setAll(array $routeParameters): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function unset(string $paramName): self
+              public function unset(string $paramName): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function unsetAll(): self
+              public function unsetAll(): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function unsetAllExcept(string ...$namesOfParamsToKeep): self
+              public function unsetAllExcept(string ...$namesOfParamsToKeep): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function includeReferrer(): self
+              public function includeReferrer(): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function removeReferrer(): self
+              public function removeReferrer(): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setReferrer(string $referrer): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setReferrer(string $referrer): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function addSignature(bool $addSignature = true): self
+              public function addSignature(bool $addSignature = true): self
             {
                 return $this;
             }
@@ -1096,32 +1042,32 @@ final class TestAdminUrlGeneratorTest extends TestCase
     public function testAddSignatureAndGetSignature(): void
     {
         $inner = new class implements AdminUrlGeneratorInterface {
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setDashboard(string $dashboardControllerFqcn): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setDashboard(string $dashboardControllerFqcn): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setController(string $crudControllerFqcn): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setController(string $crudControllerFqcn): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setAction(string $action): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setAction(string $action): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setRoute(string $routeName, array $routeParameters = []): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setRoute(string $routeName, array $routeParameters = []): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setEntityId(mixed $entityId): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setEntityId(mixed $entityId): self
             {
                 return $this;
             }
@@ -1131,56 +1077,50 @@ final class TestAdminUrlGeneratorTest extends TestCase
                 return null;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function set(string $paramName, mixed $paramValue): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function set(string $paramName, mixed $paramValue): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setAll(array $routeParameters): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setAll(array $routeParameters): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function unset(string $paramName): self
+              public function unset(string $paramName): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function unsetAll(): self
+              public function unsetAll(): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function unsetAllExcept(string ...$namesOfParamsToKeep): self
+              public function unsetAllExcept(string ...$namesOfParamsToKeep): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function includeReferrer(): self
+              public function includeReferrer(): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function removeReferrer(): self
+              public function removeReferrer(): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function setReferrer(string $referrer): self
+              /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
+              public function setReferrer(string $referrer): self
             {
                 return $this;
             }
 
-            /** @phpstan-ignore-next-line symplify.noReturnSetterMethod */
-            public function addSignature(bool $addSignature = true): self
+              public function addSignature(bool $addSignature = true): self
             {
                 return $this;
             }

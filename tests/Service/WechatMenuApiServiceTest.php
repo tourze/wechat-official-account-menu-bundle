@@ -36,7 +36,7 @@ final class WechatMenuApiServiceTest extends AbstractIntegrationTestCase
         // 这样可以避免容器服务已初始化的问题
 
         // 创建Mock对象
-        $this->officialAccountClientMock = new MockOfficialAccountClient();
+                $this->officialAccountClientMock = new MockOfficialAccountClient();
 
         // 在服务初始化之前设置Mock对象
         $container = self::getContainer();
@@ -51,7 +51,7 @@ final class WechatMenuApiServiceTest extends AbstractIntegrationTestCase
         $account = $this->createTestAccount();
         $menuData = ['button' => []];
 
-        /** @phpstan-ignore method.resultUnused */
+                /** @phpstan-ignore method.resultUnused */
         $this->officialAccountClientMock
             ->expects($this->once())
             ->method('request')
@@ -70,7 +70,7 @@ final class WechatMenuApiServiceTest extends AbstractIntegrationTestCase
         $menuData = ['button' => []];
         $exception = new \Exception('API Error');
 
-        $this->officialAccountClientMock
+                $this->officialAccountClientMock
             ->expects($this->once())
             ->method('request')
             ->willThrowException($exception)
@@ -86,7 +86,7 @@ final class WechatMenuApiServiceTest extends AbstractIntegrationTestCase
     {
         $account = $this->createTestAccount();
 
-        /** @phpstan-ignore method.resultUnused */
+                /** @phpstan-ignore method.resultUnused */
         $this->officialAccountClientMock
             ->expects($this->once())
             ->method('request')
@@ -104,7 +104,7 @@ final class WechatMenuApiServiceTest extends AbstractIntegrationTestCase
         $account = $this->createTestAccount();
         $exception = new \Exception('API Error');
 
-        $this->officialAccountClientMock
+                $this->officialAccountClientMock
             ->expects($this->once())
             ->method('request')
             ->willThrowException($exception)
@@ -124,7 +124,7 @@ final class WechatMenuApiServiceTest extends AbstractIntegrationTestCase
         $expectedMenuId = 'menu123';
 
         $response = ['menuid' => $expectedMenuId];
-        $this->officialAccountClientMock
+                $this->officialAccountClientMock
             ->expects($this->once())
             ->method('request')
             ->willReturn($response)
@@ -141,7 +141,7 @@ final class WechatMenuApiServiceTest extends AbstractIntegrationTestCase
         $menuData = ['button' => []];
         $matchRule = ['tag_id' => '101'];
 
-        $this->officialAccountClientMock
+                $this->officialAccountClientMock
             ->expects($this->once())
             ->method('request')
             ->willReturn([])
@@ -158,7 +158,7 @@ final class WechatMenuApiServiceTest extends AbstractIntegrationTestCase
         $account = $this->createTestAccount();
         $menuId = 'menu123';
 
-        /** @phpstan-ignore method.resultUnused */
+                /** @phpstan-ignore method.resultUnused */
         $this->officialAccountClientMock
             ->expects($this->once())
             ->method('request')
@@ -177,7 +177,7 @@ final class WechatMenuApiServiceTest extends AbstractIntegrationTestCase
         $menuId = 'menu123';
         $exception = new \Exception('API Error');
 
-        $this->officialAccountClientMock
+                $this->officialAccountClientMock
             ->expects($this->once())
             ->method('request')
             ->willThrowException($exception)
@@ -195,7 +195,7 @@ final class WechatMenuApiServiceTest extends AbstractIntegrationTestCase
         $userId = 'user123';
         $expectedResult = ['menu' => 'data'];
 
-        $this->officialAccountClientMock
+                $this->officialAccountClientMock
             ->expects($this->once())
             ->method('request')
             ->willReturn($expectedResult)
@@ -213,7 +213,7 @@ final class WechatMenuApiServiceTest extends AbstractIntegrationTestCase
         $userId = 'user123';
         $exception = new \Exception('API Error');
 
-        $this->officialAccountClientMock
+                $this->officialAccountClientMock
             ->expects($this->once())
             ->method('request')
             ->willThrowException($exception)
