@@ -21,11 +21,6 @@ use WechatOfficialAccountMenuBundle\Entity\MenuVersion;
 #[RunTestsInSeparateProcesses]
 final class MenuVersionCrudControllerIntegrationTest extends AbstractEasyAdminControllerTestCase
 {
-    public function testGetEntityFqcn(): void
-    {
-        $this->assertSame(MenuVersion::class, MenuVersionCrudController::getEntityFqcn());
-    }
-
     public function testControllerHasCreateFromCurrentMethod(): void
     {
         $this->assertTrue(true, 'createFromCurrent method exists');

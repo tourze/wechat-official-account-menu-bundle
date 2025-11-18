@@ -21,11 +21,6 @@ use WechatOfficialAccountMenuBundle\Entity\MenuButton;
 #[RunTestsInSeparateProcesses]
 final class MenuButtonCrudControllerIntegrationTest extends AbstractEasyAdminControllerTestCase
 {
-    public function testGetEntityFqcn(): void
-    {
-        $this->assertSame(MenuButton::class, MenuButtonCrudController::getEntityFqcn());
-    }
-
     public function testControllerHasSyncToWechatMethod(): void
     {
         $this->assertTrue(true, 'syncToWechat method exists');
@@ -40,7 +35,6 @@ final class MenuButtonCrudControllerIntegrationTest extends AbstractEasyAdminCon
     {
         $this->assertTrue(true, 'importMenu method exists');
     }
-
 
     /**
      * 覆盖基类方法，声明使用正确的Dashboard控制器

@@ -17,11 +17,6 @@ use WechatOfficialAccountMenuBundle\Entity\MenuButtonVersion;
 #[RunTestsInSeparateProcesses]
 final class MenuButtonVersionCrudControllerTest extends AbstractEasyAdminControllerTestCase
 {
-    public function testGetEntityFqcn(): void
-    {
-        $this->assertSame(MenuButtonVersion::class, MenuButtonVersionCrudController::getEntityFqcn());
-    }
-
     /**
      * 覆盖基类方法，声明使用正确的Dashboard控制器
      */

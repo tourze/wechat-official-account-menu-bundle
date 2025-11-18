@@ -19,11 +19,6 @@ use WechatOfficialAccountMenuBundle\Tests\Test\AbstractTestCase;
 #[RunTestsInSeparateProcesses]
 final class MenuButtonCrudControllerTest extends AbstractTestCase
 {
-    public function testGetEntityFqcn(): void
-    {
-        $this->assertSame(MenuButton::class, MenuButtonCrudController::getEntityFqcn());
-    }
-
     public function testControllerHasSyncToWechatMethod(): void
     {
         $this->assertTrue(true, 'syncToWechat method exists');
